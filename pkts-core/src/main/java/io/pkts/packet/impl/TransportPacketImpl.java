@@ -4,8 +4,10 @@
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
+import io.pkts.framer.GsmTapFramer;
 import io.pkts.framer.RTPFramer;
 import io.pkts.framer.SIPFramer;
+import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.IPPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TransportPacket;
@@ -21,6 +23,7 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
 
     private static final SIPFramer sipFramer = new SIPFramer();
     private static final RTPFramer rtpFramer = new RTPFramer();
+    private static final GsmTapFramer gsmTapFramer = new GsmTapFramer();
 
     private final IPPacket parent;
 
@@ -110,7 +113,9 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
             return null;
         }
 
-        if (sipFramer.accept(payload)) {
+        if (getDestinationPort() == GsmTapPacket.UDP_PORT) {
+            return gsmTapFramer.frame(this, payload);
+        } else if (sipFramer.accept(payload)) {
             return sipFramer.frame(this, payload);
         } else if (rtpFramer.accept(payload)) {
             // RTP is tricky to parse so if we return

@@ -10,6 +10,7 @@ import io.pkts.framer.EthernetFramer;
 import io.pkts.framer.FramingException;
 import io.pkts.framer.IPv4Framer;
 import io.pkts.framer.SllFramer;
+import io.pkts.framer.UpperPDUFramer;
 import io.pkts.packet.PCapPacket;
 import io.pkts.packet.PacketParseException;
 import io.pkts.packet.Packet;
@@ -33,6 +34,7 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
     private static final SllFramer sllFramer = new SllFramer();
     private static final EthernetFramer ethernetFramer = new EthernetFramer();
     private static final IPv4Framer ipFramer = new IPv4Framer();
+    private static final UpperPDUFramer upperPduFramer = new UpperPDUFramer();
     private final PcapGlobalHeader pcapGlobalHeader;
 
     /**
@@ -130,6 +132,8 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
                 return sllFramer.frame(this, payload);
             case 101:
                 return ipFramer.frame(this, payload);
+            case 252:
+                return upperPduFramer.frame(this, payload);
         }
     }
 

@@ -14,6 +14,3 @@ dependencies {
 
 description = "Core Pkts"
 
-java {
-    withJavadocJar()
-}

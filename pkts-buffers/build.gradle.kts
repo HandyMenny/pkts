@@ -12,6 +12,3 @@ dependencies {
 
 description = "Pkts Buffer Lib"
 
-java {
-    withJavadocJar()
-}

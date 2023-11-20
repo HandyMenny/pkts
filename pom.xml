@@ -6,12 +6,6 @@
      <maven>3.0.4</maven>
   </prerequisites>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <name>Pkts IO</name>
   <groupId>io.pkts</groupId>
   <artifactId>pkts-parent</artifactId>
@@ -33,13 +27,6 @@
          <timezone>-8</timezone>
       </developer>
    </developers>
-
-  <scm>
-    <connection>scm:git:git@github.com:aboutsip/pkts.git</connection>
-    <developerConnection>scm:git:git@github.com:aboutsip/pkts.git</developerConnection>
-    <url>git@github.com:aboutsip/pkts.git</url>
-    <tag>HEAD</tag>
-  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

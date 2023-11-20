@@ -19,16 +19,6 @@
       <artifactId>pkts-buffers</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>io.pkts</groupId>
-      <artifactId>pkts-sip</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.pkts</groupId>
-      <artifactId>pkts-sdp</artifactId>
-    </dependency>
-
     <!-- Test Dependencies -->
     <dependency>
       <groupId>junit</groupId>

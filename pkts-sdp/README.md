@@ -1,2 +1,0 @@
-# Session Description Protocol Library
-

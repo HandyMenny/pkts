@@ -14,9 +14,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.pkts.packet.sip.impl.PreConditions.assertArgument;
-import static io.pkts.packet.sip.impl.PreConditions.assertNotEmpty;
-import static io.pkts.packet.sip.impl.PreConditions.assertNotNull;
+import static io.pkts.buffer.Buffers.assertNotEmpty;
+import static io.pkts.packet.PreConditions.assertArgument;
+import static io.pkts.packet.PreConditions.assertNotNull;
 
 public class SctpPacketImpl extends TransportPacketImpl implements SctpPacket {
 

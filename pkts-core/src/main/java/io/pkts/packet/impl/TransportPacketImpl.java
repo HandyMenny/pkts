@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.framer.GsmTapFramer;
 import io.pkts.framer.RTPFramer;
-import io.pkts.framer.SIPFramer;
 import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.IPPacket;
 import io.pkts.packet.Packet;
@@ -21,7 +20,6 @@ import java.io.IOException;
  */
 public abstract class TransportPacketImpl extends AbstractPacket implements TransportPacket {
 
-    private static final SIPFramer sipFramer = new SIPFramer();
     private static final RTPFramer rtpFramer = new RTPFramer();
     private static final GsmTapFramer gsmTapFramer = new GsmTapFramer();
 
@@ -103,7 +101,7 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#getNextPacket()
      */
     @Override
@@ -115,8 +113,6 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
 
         if (getDestinationPort() == GsmTapPacket.UDP_PORT) {
             return gsmTapFramer.frame(this, payload);
-        } else if (sipFramer.accept(payload)) {
-            return sipFramer.frame(this, payload);
         } else if (rtpFramer.accept(payload)) {
             // RTP is tricky to parse so if we return
             // null then it wasn't an RTP packet afterall

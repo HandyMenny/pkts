@@ -12,7 +12,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.packet.sctp.SctpDataChunk;
 import io.pkts.packet.sctp.SctpPacket;
-import io.pkts.packet.sip.SipPacket;
 import io.pkts.protocol.Protocol;
 import org.junit.After;
 import org.junit.Before;
@@ -34,9 +33,9 @@ import static org.junit.Assert.fail;
 
 /**
  * Test base for all tests regarding framing and parsing
- * 
+ *
  * @author jonas@jonasborjesson.com
- * 
+ *
  */
 public class PktsTestBase {
 
@@ -223,7 +222,7 @@ public class PktsTestBase {
 
     /**
      * Helper class that simply just counts the number of SIP requests.
-     * 
+     *
      */
     public static class MethodCalculator implements PacketHandler {
         public int total;
@@ -235,19 +234,8 @@ public class PktsTestBase {
         @Override
         public boolean nextPacket(final Packet packet) {
             try {
-                final SipPacket msg = (SipPacket) packet.getPacket(Protocol.SIP);
+                packet.getPacket(Protocol.SIP);
                 ++this.total;
-                if (msg.isRequest()) {
-                    if (msg.isInvite()) {
-                        ++this.invite;
-                    } else if (msg.isBye()) {
-                        ++this.bye;
-                    } else if (msg.isAck()) {
-                        ++this.ack;
-                    } else if (msg.isCancel()) {
-                        ++this.cancel;
-                    }
-                }
             } catch (final IOException e) {
                 fail("Got an IOException in my test " + e.getMessage());
             } catch (final PacketParseException e) {
@@ -267,7 +255,7 @@ public class PktsTestBase {
         private final PcapOutputStream out;
 
         /**
-         * 
+         *
          * @param out
          *            the output stream to write to
          */
@@ -279,13 +267,9 @@ public class PktsTestBase {
         public boolean nextPacket(final Packet packet) {
             try {
                 // only write out INVITE and BYE requests
-                final SipPacket msg = (SipPacket) packet.getPacket(Protocol.SIP);
-                final String method = msg.getMethod().toString();
-                final boolean isInviteOrBye = "INVITE".equals(method) || "BYE".equals(method);
-                if (msg.isRequest() && isInviteOrBye) {
-                    // final TransportPacket pkt = (TransportPacket) msg.getPacket(Protocol.UDP);
-                    this.out.write(msg);
-                }
+                final Packet msg = packet.getPacket(Protocol.SIP);
+                // final TransportPacket pkt = (TransportPacket) msg.getPacket(Protocol.UDP);
+                this.out.write(msg);
             } catch (final IOException e) {
                 fail("Got an IOException in my test " + e.getMessage());
             } catch (final PacketParseException e) {

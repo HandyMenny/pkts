@@ -5,7 +5,6 @@ import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
 import io.pkts.filters.Filter;
 import io.pkts.filters.FilterException;
-import io.pkts.filters.FilterFactory;
 import io.pkts.filters.FilterParseException;
 import io.pkts.frame.PcapGlobalHeader;
 import io.pkts.framer.FramerManager;
@@ -22,9 +21,9 @@ import java.io.OutputStream;
 import java.nio.ByteOrder;
 
 /**
- * 
+ *
  * @author jonas@jonasborjesson.com
- * 
+ *
  */
 public class Pcap {
 
@@ -38,7 +37,6 @@ public class Pcap {
      */
     private Filter filter = null;
 
-    private final FilterFactory filterFactory = FilterFactory.getInstance();
 
     private Pcap(final PcapGlobalHeader header, final Buffer buffer) {
         assert header != null;
@@ -46,27 +44,6 @@ public class Pcap {
         this.header = header;
         this.buffer = buffer;
         this.framerManager = FramerManager.getInstance();
-    }
-
-    /**
-     * It is possible to specify a filter so that only packets that matches the
-     * filter will be passed onto the registered {@link PacketHandler}.
-     * 
-     * E.g., to only accept packets of type sip with the Call-ID of "123" you
-     * could pass in the following filter:
-     * 
-     * "sip.Call-ID == 123"
-     * 
-     * @param expression
-     *            the expression. If the expression is null or the empty string,
-     *            it will silently be ignored.
-     * @throws FilterParseException
-     *             in case the expression is not a valid filter expression.
-     */
-    public void setFilter(final String expression) throws FilterParseException {
-        if (expression != null && !expression.isEmpty()) {
-            this.filter = this.filterFactory.createFilter(expression);
-        }
     }
 
     public void loop(final PacketHandler callback) throws IOException, FramingException {
@@ -102,7 +79,7 @@ public class Pcap {
      * you can just safely write frames back out to this
      * {@link PcapOutputStream}. Good for those applications that needs to
      * filter a {@link Pcap} and write out new files.
-     * 
+     *
      * @param out
      * @return
      * @throws IllegalArgumentException
@@ -113,7 +90,7 @@ public class Pcap {
 
     /**
      * Capture packets from the input stream
-     * 
+     *
      * @param is
      * @return
      * @throws IOException
@@ -139,7 +116,7 @@ public class Pcap {
     }
 
     /**
-     * 
+     *
      * @param file
      *            the pcap file
      * @return a new {@link Pcap}
@@ -153,7 +130,7 @@ public class Pcap {
     }
 
     /**
-     * 
+     *
      * @param file
      * @return
      * @throws FileNotFoundException

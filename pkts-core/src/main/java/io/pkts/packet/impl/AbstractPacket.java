@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.pkts.packet.impl;
 
@@ -9,7 +9,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.packet.TransportPacket;
 import io.pkts.packet.UDPPacket;
-import io.pkts.packet.sip.SipPacket;
 import io.pkts.protocol.Protocol;
 
 import java.io.IOException;
@@ -17,9 +16,9 @@ import java.io.OutputStream;
 
 /**
  * ALL packets within pkts.io must implement this {@link AbstractPacket}.
- * 
+ *
  * @author jonas@jonasborjesson.com
- * 
+ *
  */
 public abstract class AbstractPacket implements Packet {
 
@@ -45,7 +44,7 @@ public abstract class AbstractPacket implements Packet {
     private Packet nextPacket;
 
     /**
-     * 
+     *
      * @param p
      *            the protocol that this {@link Packet} is representing.
      * @param parent
@@ -55,8 +54,8 @@ public abstract class AbstractPacket implements Packet {
      *            the actual payload of this packet. For an {@link IPPacket}
      *            that would typically be {@link TransportPacket} (such as udp
      *            or tcp). For a {@link UDPPacket}, the payload could really be
-     *            anything, such as a {@link SipPacket}.
-     * 
+     *            anything.
+     *
      */
     public AbstractPacket(final Protocol p, final Packet parent, final Buffer payload) {
         assert p != null;
@@ -67,7 +66,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#verify()
      */
     @Override
@@ -102,7 +101,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#hasProtocol(io.pkts.protocol.Protocol)
      */
     @Override
@@ -121,7 +120,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#getProtocol()
      */
     @Override
@@ -131,7 +130,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#getPacket(io.pkts.protocol.Protocol)
      */
     @Override
@@ -163,7 +162,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#getName()
      */
     @Override
@@ -173,7 +172,7 @@ public abstract class AbstractPacket implements Packet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see io.pkts.packet.Packet#getPayload()
      */
     @Override

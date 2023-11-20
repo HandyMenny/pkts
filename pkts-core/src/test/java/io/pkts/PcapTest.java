@@ -5,7 +5,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import io.pkts.packet.Packet;
-import io.pkts.packet.sip.SipPacket;
 import io.pkts.protocol.Protocol;
 
 import java.io.ByteArrayOutputStream;
@@ -71,7 +70,7 @@ public class PcapTest extends PktsTestBase {
         @Override
         public boolean nextPacket(final Packet packet) {
             try {
-                final SipPacket sip = (SipPacket) packet.getPacket(Protocol.SIP);
+                packet.getPacket(Protocol.SIP);
                 ++this.count;
             } catch (final Exception e) {
                 e.printStackTrace();

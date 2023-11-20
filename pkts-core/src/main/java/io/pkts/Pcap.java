@@ -3,8 +3,6 @@ package io.pkts;
 import io.pkts.buffer.BoundedInputStreamBuffer;
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
-import io.pkts.filters.Filter;
-import io.pkts.filters.FilterException;
 import io.pkts.frame.PcapGlobalHeader;
 import io.pkts.framer.FramerManager;
 import io.pkts.framer.FramingException;
@@ -27,12 +25,6 @@ public class Pcap {
     private final Buffer buffer;
     private final FramerManager framerManager;
 
-    /**
-     * If the filter is set then only frames that are accepted by the filter will be further
-     * processed.
-     */
-    private Filter filter = null;
-
     private Pcap(final PcapGlobalHeader header, final Buffer buffer) {
         assert header != null;
         assert buffer != null;
@@ -49,22 +41,9 @@ public class Pcap {
         Packet packet = null;
         boolean processNext = true;
         while ((packet = framer.frame(null, this.buffer)) != null && processNext) {
-            try {
-                // System.out.println(" - " + (count++));
-                final long time = packet.getArrivalTime();
-                this.framerManager.tick(time);
-                if (this.filter == null) {
-                    processNext = callback.nextPacket(packet);
-                } else if (this.filter != null && this.filter.accept(packet)) {
-                    processNext = callback.nextPacket(packet);
-                }
-            } catch (final FilterException e) {
-                // TODO: use the callback instead to signal
-                // exceptions
-                System.err.println(
-                        "WARN: the filter complained about the last frame. Msg (if any) - "
-                                + e.getMessage());
-            }
+            final long time = packet.getArrivalTime();
+            this.framerManager.tick(time);
+            processNext = callback.nextPacket(packet);
         }
     }
 

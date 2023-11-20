@@ -5,13 +5,11 @@ import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
 import io.pkts.filters.Filter;
 import io.pkts.filters.FilterException;
-import io.pkts.filters.FilterParseException;
 import io.pkts.frame.PcapGlobalHeader;
 import io.pkts.framer.FramerManager;
 import io.pkts.framer.FramingException;
 import io.pkts.framer.PcapFramer;
 import io.pkts.packet.Packet;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,9 +19,7 @@ import java.io.OutputStream;
 import java.nio.ByteOrder;
 
 /**
- *
  * @author jonas@jonasborjesson.com
- *
  */
 public class Pcap {
 
@@ -32,11 +28,10 @@ public class Pcap {
     private final FramerManager framerManager;
 
     /**
-     * If the filter is set then only frames that are accepted by the filter
-     * will be further processed.
+     * If the filter is set then only frames that are accepted by the filter will be further
+     * processed.
      */
     private Filter filter = null;
-
 
     private Pcap(final PcapGlobalHeader header, final Buffer buffer) {
         assert header != null;
@@ -66,25 +61,26 @@ public class Pcap {
             } catch (final FilterException e) {
                 // TODO: use the callback instead to signal
                 // exceptions
-                System.err.println("WARN: the filter complained about the last frame. Msg (if any) - " +
-                        e.getMessage());
+                System.err.println(
+                        "WARN: the filter complained about the last frame. Msg (if any) - "
+                                + e.getMessage());
             }
         }
     }
 
     /**
-     * Create an {@link PcapOutputStream} based on this {@link Pcap}. The new
-     * {@link PcapOutputStream} is configured to use the same
-     * {@link PcapGlobalHeader} as the {@link Pcap} is using which means that
-     * you can just safely write frames back out to this
-     * {@link PcapOutputStream}. Good for those applications that needs to
-     * filter a {@link Pcap} and write out new files.
+     * Create an {@link PcapOutputStream} based on this {@link Pcap}. The new {@link
+     * PcapOutputStream} is configured to use the same {@link PcapGlobalHeader} as the {@link Pcap}
+     * is using which means that you can just safely write frames back out to this {@link
+     * PcapOutputStream}. Good for those applications that needs to filter a {@link Pcap} and write
+     * out new files.
      *
      * @param out
      * @return
      * @throws IllegalArgumentException
      */
-    public PcapOutputStream createOutputStream(final OutputStream out) throws IllegalArgumentException {
+    public PcapOutputStream createOutputStream(final OutputStream out)
+            throws IllegalArgumentException {
         return PcapOutputStream.create(this.header, out);
     }
 
@@ -105,23 +101,22 @@ public class Pcap {
      * Capture packets from the input stream
      *
      * @param is
-     * @param bufferCapacity Size of buffer, must be larger than PCAPs largest framesize. See SNAPLENGTH for tcpdump, et.al.
+     * @param bufferCapacity Size of buffer, must be larger than PCAPs largest framesize. See
+     *     SNAPLENGTH for tcpdump, et.al.
      * @return
      * @throws IOException
      */
-    public static Pcap openStream(final InputStream is, final int bufferCapacity) throws IOException {
+    public static Pcap openStream(final InputStream is, final int bufferCapacity)
+            throws IOException {
         final Buffer stream = new BoundedInputStreamBuffer(bufferCapacity, is);
         final PcapGlobalHeader header = PcapGlobalHeader.parse(stream);
         return new Pcap(header, stream);
     }
 
     /**
-     *
-     * @param file
-     *            the pcap file
+     * @param file the pcap file
      * @return a new {@link Pcap}
-     * @throws FileNotFoundException
-     *             in case the file doesn't exist.
+     * @throws FileNotFoundException in case the file doesn't exist.
      * @throws IOException
      */
     public static Pcap openStream(final File file) throws FileNotFoundException, IOException {
@@ -130,7 +125,6 @@ public class Pcap {
     }
 
     /**
-     *
      * @param file
      * @return
      * @throws FileNotFoundException
@@ -144,9 +138,7 @@ public class Pcap {
         // TODO
     }
 
-    /**
-     *
-     */
+    /** */
     public PcapGlobalHeader getPcapHeader() {
         return this.header;
     }

@@ -1,6 +1,4 @@
-/**
- *
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -10,29 +8,24 @@ import io.pkts.packet.upperpdu.PDUOption.TagOption;
 import io.pkts.packet.upperpdu.UpperPDUPacket;
 import io.pkts.packet.upperpdu.UpperPDUPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpperPDUFramer implements Framer<PCapPacket, UpperPDUPacket> {
 
-    public UpperPDUFramer() {
-    }
+    public UpperPDUFramer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.UPPPER_PDU;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public UpperPDUPacket frame(final PCapPacket parent, final Buffer buffer) throws IOException, FramingException {
+    public UpperPDUPacket frame(final PCapPacket parent, final Buffer buffer)
+            throws IOException, FramingException {
         if (parent == null) {
             throw new IllegalArgumentException("The parent frame cannot be null");
         }
@@ -50,12 +43,10 @@ public class UpperPDUFramer implements Framer<PCapPacket, UpperPDUPacket> {
         return new UpperPDUPacketImpl(Protocol.UPPPER_PDU, parent, optionsArray, payload);
     }
 
-
     @Override
     public boolean accept(final Buffer data) {
         return false;
     }
-
 
     private PDUOption parseNextOption(final Buffer buffer) throws IOException {
         TagOption type = TagOption.valueOf(buffer.readShort());

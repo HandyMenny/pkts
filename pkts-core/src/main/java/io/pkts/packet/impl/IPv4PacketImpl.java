@@ -1,6 +1,4 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
@@ -9,11 +7,9 @@ import io.pkts.framer.SctpFramer;
 import io.pkts.framer.TCPFramer;
 import io.pkts.framer.UDPFramer;
 import io.pkts.packet.IPv4Packet;
-import io.pkts.packet.PCapPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -34,10 +30,9 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
 
     private final int options;
 
-    /**
-     *
-     */
-    public IPv4PacketImpl(final Packet parent, final Buffer headers, final int options, final Buffer payload) {
+    /** */
+    public IPv4PacketImpl(
+            final Packet parent, final Buffer headers, final int options, final Buffer payload) {
         super(Protocol.IPv4, parent, payload);
         assert parent != null;
         assert headers != null;
@@ -81,8 +76,8 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     /**
      * Get the raw source ip as 32-bit integer
      *
-     * Note, these are the raw bits and should be treated as such. If you really
-     * want to print it, then you should treat it as unsigned
+     * <p>Note, these are the raw bits and should be treated as such. If you really want to print
+     * it, then you should treat it as unsigned
      *
      * @return
      */
@@ -90,10 +85,7 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         return this.headers.getInt(12);
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getSourceIP() {
         final short a = this.headers.getUnsignedByte(12);
@@ -113,8 +105,8 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     /**
      * Get the raw destination ip as a 32-bit integer.
      *
-     * Note, these are the raw bits and should be treated as such. If you really
-     * want to print it, then you should treat it as unsigned
+     * <p>Note, these are the raw bits and should be treated as such. If you really want to print
+     * it, then you should treat it as unsigned
      *
      * @return
      */
@@ -122,10 +114,7 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         return this.headers.getInt(16);
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getDestinationIP() {
         final short a = this.headers.getUnsignedByte(16);
@@ -135,9 +124,7 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         return a + "." + b + "." + c + "." + d;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // nothing to do for ip packets
@@ -152,7 +139,9 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     public void write(final OutputStream out, final Buffer payload) throws IOException {
         // Note, you need to set the total length before you merge the packets since
         // Buffers.wrap will copy the bytes.
-        final int size = this.headers.getReadableBytes() + (payload != null ? payload.getReadableBytes() : 0);
+        final int size =
+                this.headers.getReadableBytes()
+                        + (payload != null ? payload.getReadableBytes() : 0);
         this.setTotalLength(size);
         reCalculateChecksum();
         final Buffer pkt = Buffers.wrap(this.headers, payload);
@@ -214,8 +203,8 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     }
 
     /**
-     * Very naive initial implementation. Should be changed to do a better job
-     * and its performance probably can go up a lot as well.
+     * Very naive initial implementation. Should be changed to do a better job and its performance
+     * probably can go up a lot as well.
      *
      * @param startIndex
      * @param address
@@ -229,10 +218,7 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         reCalculateChecksum();
     }
 
-    /**
-     * Whenever we change a value in the IP packet we need to update the
-     * checksum as well.
-     */
+    /** Whenever we change a value in the IP packet we need to update the checksum as well. */
     @Override
     public void reCalculateChecksum() {
         final int checksum = calculateChecksum();
@@ -247,7 +233,9 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     @Override
     public IPv4Packet clone() {
         final Packet parent = this.parent.clone();
-        final IPv4Packet pkt = new IPv4PacketImpl(parent, this.headers.clone(), this.options, getPayload().clone());
+        final IPv4Packet pkt =
+                new IPv4PacketImpl(
+                        parent, this.headers.clone(), this.options, getPayload().clone());
         return pkt;
     }
 
@@ -263,17 +251,21 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         final Protocol protocol = Protocol.valueOf(code);
         if (protocol != null) {
             switch (protocol) {
-            case UDP:
-                return udpFramer.frame(this, payload);
-            case TCP:
-                return tcpFramer.frame(this, payload);
-            case SCTP:
-                return sctpFramer.frame(this, payload);
-            default:
-                throw new PacketParseException(9, String.format("Unsupported inner protocol %s for IPv4", protocol.getName()));
+                case UDP:
+                    return udpFramer.frame(this, payload);
+                case TCP:
+                    return tcpFramer.frame(this, payload);
+                case SCTP:
+                    return sctpFramer.frame(this, payload);
+                default:
+                    throw new PacketParseException(
+                            9,
+                            String.format(
+                                    "Unsupported inner protocol %s for IPv4", protocol.getName()));
             }
         } else {
-            throw new PacketParseException(9, String.format("Unknown protocol %d inside IPv4 packet", code));
+            throw new PacketParseException(
+                    9, String.format("Unknown protocol %d inside IPv4 packet", code));
         }
     }
 
@@ -296,25 +288,22 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     public int getHeaderLength() {
         try {
             final byte b = this.headers.getByte(0);
-            // length is encoded as the number of 32-bit words, so to get number of bytes we must multiply by 4
+            // length is encoded as the number of 32-bit words, so to get number of bytes we must
+            // multiply by 4
             return (b & 0x0F) * 4;
         } catch (final IOException e) {
-            throw new RuntimeException("unable to get the header length of the IP packet due to IOException", e);
+            throw new RuntimeException(
+                    "unable to get the header length of the IP packet due to IOException", e);
         }
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isFragmented() {
         return isMoreFragmentsSet() || getFragmentOffset() > 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isReservedFlagSet() {
         try {
@@ -323,12 +312,9 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isDontFragmentSet() {
         try {
@@ -339,9 +325,7 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isMoreFragmentsSet() {
         try {
@@ -396,13 +380,17 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("IPv4 ");
-        sb.append(" Total Length: ").append(getTotalIPLength())
-          .append(" ID: ").append(getIdentification())
-          .append(" DF: ").append(isDontFragmentSet() ? "Set" : "Not Set")
-          .append(" MF: ").append(isMoreFragmentsSet() ? "Set" : "Not Set")
-          .append(" Fragment Offset: ").append(getFragmentOffset());
+        sb.append(" Total Length: ")
+                .append(getTotalIPLength())
+                .append(" ID: ")
+                .append(getIdentification())
+                .append(" DF: ")
+                .append(isDontFragmentSet() ? "Set" : "Not Set")
+                .append(" MF: ")
+                .append(isMoreFragmentsSet() ? "Set" : "Not Set")
+                .append(" Fragment Offset: ")
+                .append(getFragmentOffset());
 
         return sb.toString();
     }
-
 }

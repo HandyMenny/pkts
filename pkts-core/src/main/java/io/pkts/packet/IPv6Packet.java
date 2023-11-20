@@ -9,7 +9,10 @@ public interface IPv6Packet extends IPPacket {
     int EXTENSION_AH = 51;
     int EXTENSION_ESP = 50;
     int EXTENSION_MOBILITY = 135;
+
     short getTrafficClass();
+
     int getFlowLabel();
+
     int getHopLimit();
 }

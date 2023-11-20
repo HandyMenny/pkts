@@ -1,16 +1,13 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.framer.GsmTapFramer;
-import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.IPPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TransportPacket;
+import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
@@ -24,8 +21,11 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
 
     private final Buffer headers;
 
-    protected TransportPacketImpl(final IPPacket parent, final Protocol protocol, final Buffer headers,
-                                  final Buffer payload) {
+    protected TransportPacketImpl(
+            final IPPacket parent,
+            final Protocol protocol,
+            final Buffer headers,
+            final Buffer payload) {
         super(protocol, parent, payload);
         assert parent != null;
         this.parent = parent;
@@ -47,41 +47,31 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final int getSourcePort() {
         return this.headers.getUnsignedShort(0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void setSourcePort(final int port) {
         this.headers.setUnsignedShort(0, port);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final int getDestinationPort() {
         return this.headers.getUnsignedShort(2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void setDestinationPort(final int port) {
         this.headers.setUnsignedShort(2, port);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // TODO - verify checksum etc?
@@ -91,7 +81,6 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
     public final long getArrivalTime() {
         return this.parent.getArrivalTime();
     }
-
 
     @Override
     public abstract TransportPacket clone();

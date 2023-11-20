@@ -1,11 +1,8 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public interface TCPPacket extends TransportPacket {
 
@@ -27,7 +24,7 @@ public interface TCPPacket extends TransportPacket {
 
     /**
      * Check whether the psh (push) flag is turned on
-     * 
+     *
      * @return
      */
     boolean isPSH();

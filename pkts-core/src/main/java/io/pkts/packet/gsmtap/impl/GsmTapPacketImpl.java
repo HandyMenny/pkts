@@ -1,6 +1,4 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.gsmtap.impl;
 
 import io.pkts.buffer.Buffer;
@@ -9,7 +7,6 @@ import io.pkts.packet.TransportPacket;
 import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.impl.AbstractPacket;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -18,7 +15,8 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
     private final TransportPacket parent;
     private final Buffer headers;
 
-    public GsmTapPacketImpl(final TransportPacket parent, final Buffer headers, final Buffer payload) {
+    public GsmTapPacketImpl(
+            final TransportPacket parent, final Buffer headers, final Buffer payload) {
         super(Protocol.GSMTAP, parent, payload);
         this.parent = parent;
         this.headers = headers;
@@ -32,11 +30,22 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("GSMTAP ");
-        sb.append(" Version: ").append(getVersion())
-                .append(" Type: ").append(getType()).append("(").append(getTypeAsInt()).append(")")
-                .append(" SubType: ").append(getSubType()).append("(").append(getSubTypeAsInt()).append(")")
-                .append(" Header Length: ").append(getHeaders().getReadableBytes())
-                .append(" Payload Length: ").append(getPayload().getReadableBytes());
+        sb.append(" Version: ")
+                .append(getVersion())
+                .append(" Type: ")
+                .append(getType())
+                .append("(")
+                .append(getTypeAsInt())
+                .append(")")
+                .append(" SubType: ")
+                .append(getSubType())
+                .append("(")
+                .append(getSubTypeAsInt())
+                .append(")")
+                .append(" Header Length: ")
+                .append(getHeaders().getReadableBytes())
+                .append(" Payload Length: ")
+                .append(getPayload().getReadableBytes());
         return sb.toString();
     }
 
@@ -87,5 +96,4 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
     public int getSubTypeAsInt() {
         return headers.getUnsignedByte(12);
     }
-
 }

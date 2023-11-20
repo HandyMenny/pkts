@@ -1,13 +1,10 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet;
 
 /**
  * Signals that an error has been reached unexpectedly while parsing a packet.
- * 
+ *
  * @author jonas@jonasborjesson.com
- * 
  */
 public class PacketParseException extends RuntimeException {
 
@@ -23,19 +20,18 @@ public class PacketParseException extends RuntimeException {
         this.errorOffset = errorOffset;
     }
 
-    public PacketParseException(final int errorOffset, final String message, final Exception cause) {
+    public PacketParseException(
+            final int errorOffset, final String message, final Exception cause) {
         super(message, cause);
         this.errorOffset = errorOffset;
     }
 
     /**
      * Get the offset into the buffer where the error occurred.
-     * 
+     *
      * @return
      */
     public int getErroOffset() {
         return this.errorOffset;
     }
-
-
 }

@@ -1,19 +1,15 @@
-/**
- *
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
-import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.TransportPacket;
+import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.gsmtap.impl.GsmTapPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
  * @author jonas@jonasborjesson.com
- *
  */
 public final class GsmTapFramer implements Framer<TransportPacket, GsmTapPacket> {
 
@@ -21,19 +17,16 @@ public final class GsmTapFramer implements Framer<TransportPacket, GsmTapPacket>
         // left empty intentionally
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.GSMTAP;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public GsmTapPacket frame(final TransportPacket parent, final Buffer buffer) throws IOException {
+    public GsmTapPacket frame(final TransportPacket parent, final Buffer buffer)
+            throws IOException {
         // length in number of 32bit words
         int hdrLength = buffer.getUnsignedByte(1) * 4;
         Buffer header = buffer.readBytes(hdrLength);
@@ -41,12 +34,9 @@ public final class GsmTapFramer implements Framer<TransportPacket, GsmTapPacket>
         return new GsmTapPacketImpl(parent, header, payload);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean accept(final Buffer data) throws IOException {
         return true;
     }
-
 }

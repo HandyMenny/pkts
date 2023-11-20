@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.filters;
 
 /**
@@ -30,7 +28,8 @@ public class FilterParseException extends FilterException {
      * @param message
      * @param cause
      */
-    public FilterParseException(final int errorOffset, final String message, final Throwable cause) {
+    public FilterParseException(
+            final int errorOffset, final String message, final Throwable cause) {
         super(message, cause);
         this.errorOffset = errorOffset;
     }
@@ -38,5 +37,4 @@ public class FilterParseException extends FilterException {
     public int getErrorOffset() {
         return this.errorOffset;
     }
-
 }

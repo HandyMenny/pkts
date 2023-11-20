@@ -1,10 +1,5 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.frame.UnknownEtherType;
@@ -12,30 +7,28 @@ import io.pkts.packet.MACPacket;
 import io.pkts.packet.PCapPacket;
 import io.pkts.packet.impl.MACPacketImpl;
 import io.pkts.protocol.Protocol;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Simple framer for framing Ethernet frames
- * 
+ *
  * @author jonas@jonasborjesson.com
  */
 public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
 
-    public EthernetFramer() {
-    }
+    public EthernetFramer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.ETHERNET_II;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public MACPacket frame(final PCapPacket parent, final Buffer buffer) throws IOException, FramingException {
+    public MACPacket frame(final PCapPacket parent, final Buffer buffer)
+            throws IOException, FramingException {
         if (parent == null) {
             throw new IllegalArgumentException("The parent frame cannot be null");
         }
@@ -60,7 +53,9 @@ public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
         } catch (IndexOutOfBoundsException e) {
             throw new FramingException("not enough bytes for header", getProtocol());
         } catch (final UnknownEtherType e) {
-            throw new FramingException(String.format("unknown ether type: 0x%02x%02x", e.getB1(), e.getB2()), getProtocol());
+            throw new FramingException(
+                    String.format("unknown ether type: 0x%02x%02x", e.getB1(), e.getB2()),
+                    getProtocol());
         }
 
         final Buffer payload = buffer.slice(buffer.capacity());
@@ -82,10 +77,10 @@ public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
         if (type < 1536) {
             return EtherType.None;
         }
-        for (EtherType t: EtherType.values()) {
-          if (b1 == t.b1 && b2 == t.b2) {
-              return t;
-          }
+        for (EtherType t : EtherType.values()) {
+            if (b1 == t.b1 && b2 == t.b2) {
+                return t;
+            }
         }
 
         return null;
@@ -102,10 +97,10 @@ public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
         IPv6((byte) 0x86, (byte) 0xdd),
         LLDP((byte) 0x88, (byte) 0xcc),
         EAPOL((byte) 0x88, (byte) 0x8e),
-        // Representing EtherType < 1536, which is actually a length of the frame and not a meaningful type
+        // Representing EtherType < 1536, which is actually a length of the frame and not a
+        // meaningful type
         None((byte) 0x00, (byte) 0x00),
-        Dot1Q((byte) 0x81, (byte) 0x00)
-        ;
+        Dot1Q((byte) 0x81, (byte) 0x00);
 
         private final byte b1;
         private final byte b2;
@@ -128,5 +123,4 @@ public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
             out.write(this.b2);
         }
     }
-
 }

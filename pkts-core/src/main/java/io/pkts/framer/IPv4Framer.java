@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -8,28 +6,21 @@ import io.pkts.packet.IPv4Packet;
 import io.pkts.packet.Packet;
 import io.pkts.packet.impl.IPv4PacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public class IPv4Framer implements Framer<Packet, IPv4Packet> {
-    public IPv4Framer() {
-    }
+    public IPv4Framer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.IPv4;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public IPv4Packet frame(final Packet parent, final Buffer payload) throws IOException {
 
@@ -90,8 +81,9 @@ public class IPv4Framer implements Framer<Packet, IPv4Packet> {
             options = payload.readInt();
         }
 
-        //Trim off any padding from the upper layer, e.g. Ethernet padding for small packets.
-        // If the captured frame was truncated, then use the truncated size for the data buffer, instead of what the
+        // Trim off any padding from the upper layer, e.g. Ethernet padding for small packets.
+        // If the captured frame was truncated, then use the truncated size for the data buffer,
+        // instead of what the
         // IPv4 header says its length should be.
         final int tcpLength = payload.getReaderIndex() + totalLength - (headerLength * 4);
         final Buffer data = payload.slice(Math.min(tcpLength, payload.capacity()));
@@ -103,5 +95,4 @@ public class IPv4Framer implements Framer<Packet, IPv4Packet> {
         // TODO Auto-generated method stub
         return false;
     }
-
 }

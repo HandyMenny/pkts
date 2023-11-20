@@ -1,13 +1,10 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet;
 
 /**
- * Represents a packet from the Data Link Layer (DLL - Layer 2 in the OSI
- * model). Now, this is not 100% accurate since the MAC layer is really a sub
- * layer of DLL but whatever, it works for now.
- * 
+ * Represents a packet from the Data Link Layer (DLL - Layer 2 in the OSI model). Now, this is not
+ * 100% accurate since the MAC layer is really a sub layer of DLL but whatever, it works for now.
+ *
  * @author jonas@jonasborjesson.com
  */
 public interface MACPacket extends Packet, Cloneable {
@@ -16,11 +13,10 @@ public interface MACPacket extends Packet, Cloneable {
 
     /**
      * Set the MAC address of this {@link MACPacket}.
-     * 
+     *
      * @param macAddress
-     * @throws IllegalArgumentException
-     *             in case the MAC address specified is null or the empty
-     *             string.
+     * @throws IllegalArgumentException in case the MAC address specified is null or the empty
+     *     string.
      */
     void setSourceMacAddress(String macAddress) throws IllegalArgumentException;
 
@@ -30,5 +26,4 @@ public interface MACPacket extends Packet, Cloneable {
 
     @Override
     MACPacket clone();
-
 }

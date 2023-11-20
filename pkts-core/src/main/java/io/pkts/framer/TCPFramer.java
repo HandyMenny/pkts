@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -8,32 +6,23 @@ import io.pkts.packet.IPPacket;
 import io.pkts.packet.TCPPacket;
 import io.pkts.packet.impl.TcpPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public final class TCPFramer implements Framer<IPPacket, TCPPacket> {
 
-    /**
-     * 
-     */
-    public TCPFramer() {
-    }
+    /** */
+    public TCPFramer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.TCP;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TCPPacket frame(final IPPacket parent, final Buffer buffer) throws IOException {
         if (parent == null) {
@@ -65,13 +54,10 @@ public final class TCPFramer implements Framer<IPPacket, TCPPacket> {
         return new TcpPacketImpl(parent, headers, options, payload);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean accept(final Buffer data) throws IOException {
         // TODO Auto-generated method stub
         return false;
     }
-
 }

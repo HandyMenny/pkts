@@ -1,16 +1,13 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.Clock;
 import io.pkts.Pcap;
-
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * FramerFactory
- * 
+ *
  * @author jonas@jonasborjesson.com
  */
 public final class FramerManager {
@@ -18,8 +15,7 @@ public final class FramerManager {
     private static final FramerManager instance = new FramerManager();
 
     /**
-     * The current time in the system, which is driven by
-     * {@link Pcap#loop(io.pkts.FrameHandler)}.
+     * The current time in the system, which is driven by {@link Pcap#loop(io.pkts.FrameHandler)}.
      */
     private final PcapClock clock = new PcapClock();
 
@@ -27,16 +23,14 @@ public final class FramerManager {
         return instance;
     }
 
-    /**
-     * 
-     */
+    /** */
     private FramerManager() {
         // left empty intentionally
     }
 
     /**
      * Move the {@link Clock} to the specified time.
-     * 
+     *
      * @param time
      */
     public void tick(final long time) {
@@ -62,7 +56,5 @@ public final class FramerManager {
             // System.out.println("Time is: " + formatter.format(date));
             this.currentTime.set(time);
         }
-
     }
-
 }

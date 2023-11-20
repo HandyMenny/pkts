@@ -1,11 +1,8 @@
-/**
- * 
- */
+/** */
 package io.pkts.protocol;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public final class UknownProtocolException extends Exception {
 
@@ -16,5 +13,4 @@ public final class UknownProtocolException extends Exception {
     public UknownProtocolException(final byte code) {
         this.code = code;
     }
-
 }

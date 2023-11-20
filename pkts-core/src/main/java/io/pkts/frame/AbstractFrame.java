@@ -1,49 +1,39 @@
-/**
- * 
- */
+/** */
 package io.pkts.frame;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.framer.FramerManager;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.ObjectInput;
 
-
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public abstract class AbstractFrame implements Frame {
 
     private final PcapGlobalHeader pcapGlobalHader;
 
-    /**
-     * The framer manager we use to lookup framers for protocols
-     */
+    /** The framer manager we use to lookup framers for protocols */
     private final FramerManager framerManager;
 
-    /**
-     * The protocol of this frame
-     */
+    /** The protocol of this frame */
     private final Protocol protocol;
 
     /**
-     * A frame may contain additional frames, which are carried within the
-     * payload. Note, not all frames have payloads.
+     * A frame may contain additional frames, which are carried within the payload. Note, not all
+     * frames have payloads.
      */
     private final Buffer payload;
 
-    /**
-     * The next frame.
-     */
+    /** The next frame. */
     private Frame nextFrame;
 
-    /**
-     * 
-     */
-    public AbstractFrame(final FramerManager framerManager, final PcapGlobalHeader header, final Protocol p,
+    /** */
+    public AbstractFrame(
+            final FramerManager framerManager,
+            final PcapGlobalHeader header,
+            final Protocol p,
             final Buffer payload) {
         assert framerManager != null;
         assert p != null;
@@ -53,25 +43,19 @@ public abstract class AbstractFrame implements Frame {
         this.payload = payload;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean hasProtocol(final Protocol p) throws IOException {
         return getFrame(p) != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Protocol getProtocol() {
         return this.protocol;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Frame getFrame(final Protocol p) throws IOException {
         if (this.protocol == p) {
@@ -86,25 +70,19 @@ public abstract class AbstractFrame implements Frame {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void frameAll() throws IOException {
         // TODO Auto-generated method stub
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return this.protocol.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Frame getNextFrame() throws IOException {
         if (this.nextFrame == null) {
@@ -114,9 +92,7 @@ public abstract class AbstractFrame implements Frame {
         return this.nextFrame;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Buffer getPayload() {
         return this.payload;
@@ -129,19 +105,17 @@ public abstract class AbstractFrame implements Frame {
 
     /**
      * Each implementing frame needs to figure out how to frame its payload.
-     * 
+     *
      * @param payload
      * @return
      */
-    protected abstract Frame framePayload(FramerManager framerManager, Buffer payload) throws IOException;
+    protected abstract Frame framePayload(FramerManager framerManager, Buffer payload)
+            throws IOException;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
         // we don't support this way of reading right now. Should probably add that, can't
         // be hard...
     }
-
 }

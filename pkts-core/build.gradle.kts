@@ -15,12 +15,9 @@ dependencies {
 
 description = "Core Pkts"
 
-repositories {
-    mavenCentral()
-}
-kotlin {
-    jvmToolchain(11)
-}
+repositories { mavenCentral() }
+
+kotlin { jvmToolchain(11) }
 
 spotless {
     format("misc") {

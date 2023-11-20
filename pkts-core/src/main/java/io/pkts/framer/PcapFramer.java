@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -10,7 +8,6 @@ import io.pkts.packet.PCapPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.impl.PCapPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.nio.ByteOrder;
 
@@ -23,9 +20,7 @@ public final class PcapFramer implements Framer<Packet, PCapPacket> {
     private final FramerManager framerManager;
     private final ByteOrder byteOrder;
 
-    /**
-     * 
-     */
+    /** */
     public PcapFramer(final PcapGlobalHeader globalHeader, final FramerManager framerManager) {
         assert globalHeader != null;
         assert framerManager != null;
@@ -40,9 +35,7 @@ public final class PcapFramer implements Framer<Packet, PCapPacket> {
         return Protocol.PCAP;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PCapPacket frame(final Packet parent, final Buffer buffer) throws IOException {
 
@@ -57,10 +50,12 @@ public final class PcapFramer implements Framer<Packet, PCapPacket> {
             return null;
         }
 
-        final PcapRecordHeader header = new PcapRecordHeader(this.byteOrder, record, this.globalHeader.timestampsInNs());
+        final PcapRecordHeader header =
+                new PcapRecordHeader(this.byteOrder, record, this.globalHeader.timestampsInNs());
         final int length = (int) header.getCapturedLength();
         if (length < 0) {
-            throw new FramingException(String.format("Invalid PCAP captured length of %d", length), Protocol.PCAP);
+            throw new FramingException(
+                    String.format("Invalid PCAP captured length of %d", length), Protocol.PCAP);
         }
         final int total = (int) header.getTotalLength();
         final Buffer payload = buffer.readBytes(Math.min(length, total));
@@ -72,5 +67,4 @@ public final class PcapFramer implements Framer<Packet, PCapPacket> {
         // TODO Auto-generated method stub
         return false;
     }
-
 }

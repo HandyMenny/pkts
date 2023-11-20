@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet;
 
 /**

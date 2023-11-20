@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.filters;
 
 /**
@@ -32,5 +30,4 @@ public class FilterException extends RuntimeException {
         super(message, cause);
         // TODO Auto-generated constructor stub
     }
-
 }

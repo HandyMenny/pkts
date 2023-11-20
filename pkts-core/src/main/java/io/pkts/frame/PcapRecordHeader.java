@@ -1,23 +1,17 @@
-/**
- * 
- */
+/** */
 package io.pkts.frame;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteOrder;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public final class PcapRecordHeader {
-    /**
-     * pcaprec_hdr_s struct is SIZE bytes long.
-     */
+    /** pcaprec_hdr_s struct is SIZE bytes long. */
     public static final int SIZE = 16;
 
     private final ByteOrder byteOrder;
@@ -26,14 +20,13 @@ public final class PcapRecordHeader {
 
     private final boolean nsTimestamps;
 
-    /**
-     * 
-     */
+    /** */
     public PcapRecordHeader(final ByteOrder byteOrder, final Buffer body) {
         this(byteOrder, body, false);
     }
 
-    public PcapRecordHeader(final ByteOrder byteOrder, final Buffer body, final boolean nsTimestamps) {
+    public PcapRecordHeader(
+            final ByteOrder byteOrder, final Buffer body, final boolean nsTimestamps) {
         assert body != null;
         assert body.capacity() == SIZE;
 
@@ -43,13 +36,11 @@ public final class PcapRecordHeader {
     }
 
     /**
-     * Create a default record header, which you must alter later on to match
-     * whatever it is you are writing into the pcap stream.
-     * 
-     * @param timestamp
-     *            the timestamp in milliseconds since epoch. This is the
-     *            timestamp of when the packet "arrived"
-     * 
+     * Create a default record header, which you must alter later on to match whatever it is you are
+     * writing into the pcap stream.
+     *
+     * @param timestamp the timestamp in milliseconds since epoch. This is the timestamp of when the
+     *     packet "arrived"
      * @return
      */
     public static PcapRecordHeader createDefaultHeader(final long timestamp) {
@@ -102,10 +93,9 @@ public final class PcapRecordHeader {
     }
 
     /**
-     * Get the total length of the data. Not all of that data may have been
-     * captured in this one frame, which is evident if the actual captured
-     * length is different from the total length
-     * 
+     * Get the total length of the data. Not all of that data may have been captured in this one
+     * frame, which is evident if the actual captured length is different from the total length
+     *
      * @return
      */
     public long getTotalLength() {
@@ -118,7 +108,7 @@ public final class PcapRecordHeader {
 
     /**
      * Get the actual length of what is contained in this frame.
-     * 
+     *
      * @return the length in bytes
      */
     public long getCapturedLength() {
@@ -141,14 +131,19 @@ public final class PcapRecordHeader {
         sb.append("ts_s: ").append(ts).append("\n");
 
         if (this.nsTimestamps) {
-          sb.append("ts_ns: ");
+            sb.append("ts_ns: ");
         } else {
-          sb.append("ts_us: ");
+            sb.append("ts_us: ");
         }
 
-        sb.append(tsMicroOrNanoSeconds).append("\n")
-          .append("octects: ").append(getTotalLength()).append("\n")
-          .append("length: ").append(getCapturedLength()).append("\n");
+        sb.append(tsMicroOrNanoSeconds)
+                .append("\n")
+                .append("octects: ")
+                .append(getTotalLength())
+                .append("\n")
+                .append("length: ")
+                .append(getCapturedLength())
+                .append("\n");
 
         return sb.toString();
     }

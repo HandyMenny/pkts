@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
@@ -14,7 +12,6 @@ import io.pkts.packet.MACPacket;
 import io.pkts.packet.PCapPacket;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -30,18 +27,14 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
     private final String sourceMacAddress;
     private final String destinationMacAddress;
 
-    /**
-     * If the headers are set then this overrides any of the source stuff set
-     * above.
-     */
+    /** If the headers are set then this overrides any of the source stuff set above. */
     private final Buffer headers;
 
     /**
-     * Creates a new {@link MACPacketImpl} and it assumes ethernet II and it
-     * does not check whether or not the ethertype is a known type. This method
-     * should only be used by the internal packet creating functions such as the
-     * {@link TransportPacketFactoryImpl} or the framers.
-     * 
+     * Creates a new {@link MACPacketImpl} and it assumes ethernet II and it does not check whether
+     * or not the ethertype is a known type. This method should only be used by the internal packet
+     * creating functions such as the {@link TransportPacketFactoryImpl} or the framers.
+     *
      * @param parent
      * @param headers
      * @return
@@ -58,11 +51,12 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         return new MACPacketImpl(Protocol.ETHERNET_II, parent, headers, null);
     }
 
-    /**
-     * Construct a new {@link MACPacket} based on the supplied headers.
-     * 
-     */
-    public MACPacketImpl(final Protocol protocol, final PCapPacket parent, final Buffer headers, final Buffer payload) {
+    /** Construct a new {@link MACPacket} based on the supplied headers. */
+    public MACPacketImpl(
+            final Protocol protocol,
+            final PCapPacket parent,
+            final Buffer headers,
+            final Buffer payload) {
         super(protocol, parent, payload);
         this.parent = parent;
         this.headers = headers;
@@ -70,9 +64,7 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         this.destinationMacAddress = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getSourceMacAddress() {
         if (this.sourceMacAddress != null) {
@@ -86,7 +78,8 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         }
     }
 
-    public static String toHexString(final Buffer buffer, final int start, final int length) throws IOException {
+    public static String toHexString(final Buffer buffer, final int start, final int length)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         for (int i = start; i < start + length; ++i) {
             final byte b = buffer.getByte(i);
@@ -98,9 +91,7 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         return sb.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getDestinationMacAddress() {
         if (this.destinationMacAddress != null) {
@@ -114,9 +105,7 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // nothing to verify
@@ -125,8 +114,10 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("Destination Mac Address: ").append(this.destinationMacAddress)
-          .append(" Source Mac Address: ").append(this.sourceMacAddress);
+        sb.append("Destination Mac Address: ")
+                .append(this.destinationMacAddress)
+                .append(" Source Mac Address: ")
+                .append(this.sourceMacAddress);
         return sb.toString();
     }
 
@@ -140,17 +131,13 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
         this.parent.write(out, Buffers.wrap(this.headers, payload));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setSourceMacAddress(final String macAddress) {
         setMacAddress(macAddress, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setDestinationMacAddress(final String macAddress) {
         setMacAddress(macAddress, false);
@@ -158,18 +145,17 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
 
     /**
      * Helper method for setting the mac address in the header buffer.
-     * 
-     * @param macAddress
-     *            the mac address to parse
-     * @param setSourceMacAddress
-     *            whether this is to bet set as the source mac address or not.
-     *            False implies destination mac address of course.
+     *
+     * @param macAddress the mac address to parse
+     * @param setSourceMacAddress whether this is to bet set as the source mac address or not. False
+     *     implies destination mac address of course.
      * @throws IllegalArgumentException
      */
     private void setMacAddress(final String macAddress, final boolean setSourceMacAddress)
             throws IllegalArgumentException {
         if (macAddress == null || macAddress.isEmpty()) {
-            throw new IllegalArgumentException("Null or empty string cannot be a valid MAC Address.");
+            throw new IllegalArgumentException(
+                    "Null or empty string cannot be a valid MAC Address.");
         }
         // very naive implementation first.
         final String[] segments = macAddress.split(":");
@@ -179,8 +165,10 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
 
         final int offset = setSourceMacAddress ? 6 : 0;
         for (int i = 0; i < 6; ++i) {
-            final byte b = (byte) ((Character.digit(segments[i].charAt(0), 16) << 4) + Character.digit(segments[i]
-                    .charAt(1), 16));
+            final byte b =
+                    (byte)
+                            ((Character.digit(segments[i].charAt(0), 16) << 4)
+                                    + Character.digit(segments[i].charAt(1), 16));
             this.headers.setByte(i + offset, b);
         }
     }
@@ -192,37 +180,43 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
     }
 
     public Protocol getNextProtocol() throws IOException {
-      if (getProtocol() == Protocol.ETHERNET_II) {
-          EthernetFramer.EtherType etherType;
-          try {
-              etherType = EthernetFramer.getEtherType(headers.getByte(12), headers.getByte(13));
-          } catch (UnknownEtherType e) {
-              throw new PacketParseException(12, String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
-          }
-          if (etherType == EthernetFramer.EtherType.Dot1Q) {
-              try {
-                  etherType = EthernetFramer.getEtherType(headers.getByte(16), headers.getByte(17));
-              } catch (UnknownEtherType e) {
-                  throw new PacketParseException(16, String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
-              } catch (IndexOutOfBoundsException e) {
-                  throw new PacketParseException(14, "Not enough bytes in this header");
-              }
-          }
+        if (getProtocol() == Protocol.ETHERNET_II) {
+            EthernetFramer.EtherType etherType;
+            try {
+                etherType = EthernetFramer.getEtherType(headers.getByte(12), headers.getByte(13));
+            } catch (UnknownEtherType e) {
+                throw new PacketParseException(
+                        12,
+                        String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
+            }
+            if (etherType == EthernetFramer.EtherType.Dot1Q) {
+                try {
+                    etherType =
+                            EthernetFramer.getEtherType(headers.getByte(16), headers.getByte(17));
+                } catch (UnknownEtherType e) {
+                    throw new PacketParseException(
+                            16,
+                            String.format(
+                                    "Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
+                } catch (IndexOutOfBoundsException e) {
+                    throw new PacketParseException(14, "Not enough bytes in this header");
+                }
+            }
 
-          switch (etherType) {
-              case IPv4:
-                  return Protocol.IPv4;
-              case IPv6:
-                  return Protocol.IPv6;
-              case ARP:
-                  return Protocol.ARP;
-              default:
-                  return Protocol.UNKNOWN;
-          }
-      } else {
-          // TODO: figure out how an SLL packet indicates IPv4 vs IPv6
-          return Protocol.IPv4;
-      }
+            switch (etherType) {
+                case IPv4:
+                    return Protocol.IPv4;
+                case IPv6:
+                    return Protocol.IPv6;
+                case ARP:
+                    return Protocol.ARP;
+                default:
+                    return Protocol.UNKNOWN;
+            }
+        } else {
+            // TODO: figure out how an SLL packet indicates IPv4 vs IPv6
+            return Protocol.IPv4;
+        }
     }
 
     @Override

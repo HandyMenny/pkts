@@ -1,6 +1,4 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
@@ -10,7 +8,6 @@ import io.pkts.packet.PacketParseException;
 import io.pkts.packet.TransportPacket;
 import io.pkts.packet.UDPPacket;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -18,44 +15,30 @@ import java.io.OutputStream;
  * ALL packets within pkts.io must implement this {@link AbstractPacket}.
  *
  * @author jonas@jonasborjesson.com
- *
  */
 public abstract class AbstractPacket implements Packet {
 
-    /**
-     * The protocol of this frame
-     */
+    /** The protocol of this frame */
     private final Protocol protocol;
 
     /**
-     * A packet may contain additional packets, which are carried within the
-     * payload. Note, not all packets have payloads.
+     * A packet may contain additional packets, which are carried within the payload. Note, not all
+     * packets have payloads.
      */
     private final Buffer payload;
 
-    /**
-     * The parent packet.
-     */
+    /** The parent packet. */
     private final Packet parent;
 
-    /**
-     * The next packet.
-     */
+    /** The next packet. */
     private Packet nextPacket;
 
     /**
-     *
-     * @param p
-     *            the protocol that this {@link Packet} is representing.
-     * @param parent
-     *            all {@link Packet} have a parent, this is it.
-     * @param payload
-     *            the payload of the packet, which may be null. Note, this is
-     *            the actual payload of this packet. For an {@link IPPacket}
-     *            that would typically be {@link TransportPacket} (such as udp
-     *            or tcp). For a {@link UDPPacket}, the payload could really be
-     *            anything.
-     *
+     * @param p the protocol that this {@link Packet} is representing.
+     * @param parent all {@link Packet} have a parent, this is it.
+     * @param payload the payload of the packet, which may be null. Note, this is the actual payload
+     *     of this packet. For an {@link IPPacket} that would typically be {@link TransportPacket}
+     *     (such as udp or tcp). For a {@link UDPPacket}, the payload could really be anything.
      */
     public AbstractPacket(final Protocol p, final Packet parent, final Buffer payload) {
         assert p != null;
@@ -75,12 +58,11 @@ public abstract class AbstractPacket implements Packet {
     }
 
     /**
-     * The write strategy is fairly simple. If we have a "nextPacket" it means
-     * that we have been asked to frame our payload which also means that that
-     * payload may have changed and therefore ask the nextPacket to write itself
-     * back out to the stream. If there is no nextPacket we can just take the
-     * raw payload and write it out as is since it cannot have changed since we
-     * framed this packet.
+     * The write strategy is fairly simple. If we have a "nextPacket" it means that we have been
+     * asked to frame our payload which also means that that payload may have changed and therefore
+     * ask the nextPacket to write itself back out to the stream. If there is no nextPacket we can
+     * just take the raw payload and write it out as is since it cannot have changed since we framed
+     * this packet.
      */
     @Override
     public final void write(final OutputStream out) throws IOException {
@@ -182,5 +164,4 @@ public abstract class AbstractPacket implements Packet {
         }
         return null;
     }
-
 }

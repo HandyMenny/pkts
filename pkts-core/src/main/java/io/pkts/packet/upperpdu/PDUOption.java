@@ -1,7 +1,6 @@
 package io.pkts.packet.upperpdu;
 
 import io.pkts.buffer.Buffer;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -108,7 +107,5 @@ public class PDUOption {
         public int getType() {
             return type;
         }
-
     }
 }
-

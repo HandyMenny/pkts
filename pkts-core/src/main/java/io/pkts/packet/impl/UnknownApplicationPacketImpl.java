@@ -1,17 +1,13 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TransportPacket;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
- * 
  * @author jonas@jonasborjesson.com
  */
 public class UnknownApplicationPacketImpl extends AbstractApplicationPacket {
@@ -38,5 +34,4 @@ public class UnknownApplicationPacketImpl extends AbstractApplicationPacket {
     public UnknownApplicationPacketImpl clone() {
         return new UnknownApplicationPacketImpl(getParent(), getPayload());
     }
-
 }

@@ -1,10 +1,10 @@
 package io.pkts.packet.sctp;
 
+import static io.pkts.packet.sctp.SctpChunk.Type.DATA;
+
 import io.pkts.buffer.Buffer;
 import io.pkts.packet.sctp.impl.DefaultSctpChunk;
 import io.pkts.packet.sctp.impl.SctpDataChunkImpl;
-
-import static io.pkts.packet.sctp.SctpChunk.Type.DATA;
 
 public interface SctpChunk {
 
@@ -18,43 +18,33 @@ public interface SctpChunk {
         }
     }
 
-
     Type getType();
 
     /**
-     * <p>
-     * This value represents the size of the chunk in bytes, including
-     * the Chunk Type, Chunk Flags, Chunk Length, and Chunk Value fields.
-     * Therefore, if the Chunk Value field is zero-length, the Length
-     * field will be set to 4.  The Chunk Length field does not count any
-     * chunk padding.
-     * <p>
-     * Chunks (including Type, Length, and Value fields) are padded out
-     * by the sender with all zero bytes to be a multiple of 4 bytes
-     * long.  This padding MUST NOT be more than 3 bytes in total.  The
-     * Chunk Length value does not include terminating padding of the
-     * chunk.  However, it does include padding of any variable-length
-     * parameter except the last parameter in the chunk.  The receiver
-     * MUST ignore the padding.
-     * <p>
-     * Note: A robust implementation should accept the chunk whether or
-     * not the final padding has been included in the Chunk Length.
-     * <p>
-     * (source: RFC 4960 Section 3.2)
+     * This value represents the size of the chunk in bytes, including the Chunk Type, Chunk Flags,
+     * Chunk Length, and Chunk Value fields. Therefore, if the Chunk Value field is zero-length, the
+     * Length field will be set to 4. The Chunk Length field does not count any chunk padding.
+     *
+     * <p>Chunks (including Type, Length, and Value fields) are padded out by the sender with all
+     * zero bytes to be a multiple of 4 bytes long. This padding MUST NOT be more than 3 bytes in
+     * total. The Chunk Length value does not include terminating padding of the chunk. However, it
+     * does include padding of any variable-length parameter except the last parameter in the chunk.
+     * The receiver MUST ignore the padding.
+     *
+     * <p>Note: A robust implementation should accept the chunk whether or not the final padding has
+     * been included in the Chunk Length.
+     *
+     * <p>(source: RFC 4960 Section 3.2)
      *
      * @return
      */
     int getLength();
 
-    /**
-     * Get the raw header of this SCTP Chunk
-     *
-     */
+    /** Get the raw header of this SCTP Chunk */
     Buffer getHeader();
 
     /**
-     * Get the Chunk Value excluding any potential padding that may have
-     * been included on the wire.
+     * Get the Chunk Value excluding any potential padding that may have been included on the wire.
      *
      * @return
      */
@@ -69,10 +59,10 @@ public interface SctpChunk {
 
     /**
      * The length of the value of the chunk.
-     * <p>
-     * Note that the length as encoded into the Chunk "header" includes the 4 bytes containing the size of
-     * the fields making up the header. This length is JUST the length of the actual value. Also, it does NOT
-     * include padding (if any).
+     *
+     * <p>Note that the length as encoded into the Chunk "header" includes the 4 bytes containing
+     * the size of the fields making up the header. This length is JUST the length of the actual
+     * value. Also, it does NOT include padding (if any).
      */
     int getValueLength();
 
@@ -119,7 +109,6 @@ public interface SctpChunk {
         public String getDescription() {
             return description;
         }
-
     }
 
     static Type lookup(final short type) {
@@ -174,5 +163,4 @@ public interface SctpChunk {
                 return null;
         }
     }
-
 }

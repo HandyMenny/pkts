@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet;
 
 import io.pkts.buffer.Buffer;
@@ -11,5 +9,4 @@ import io.pkts.buffer.Buffer;
 public interface SDPPacket extends Packet {
 
     Buffer toBuffer();
-
 }

@@ -1,15 +1,11 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.upperpdu;
 
 import io.pkts.buffer.Buffer;
-import io.pkts.packet.MACPacket;
 import io.pkts.packet.PCapPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.impl.AbstractPacket;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -19,21 +15,22 @@ public final class UpperPDUPacketImpl extends AbstractPacket implements UpperPDU
 
     private final PDUOption[] options;
 
-    public UpperPDUPacketImpl(final Protocol protocol, final PCapPacket parent, final PDUOption[] options, final Buffer payload) {
+    public UpperPDUPacketImpl(
+            final Protocol protocol,
+            final PCapPacket parent,
+            final PDUOption[] options,
+            final Buffer payload) {
         super(protocol, parent, payload);
         this.parent = parent;
         this.options = options;
     }
-
 
     @Override
     public long getArrivalTime() {
         return parent.getArrivalTime();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // nothing to verify
@@ -46,14 +43,17 @@ public final class UpperPDUPacketImpl extends AbstractPacket implements UpperPDU
 
     @Override
     public String toString() {
-        String sb = "EXPORTED PDU " + " Dissector: " + getDissector() +
-                " Payload Length: " +
-                getPayload().getReadableBytes() +
-                " Options: " + Arrays.toString(options);
+        String sb =
+                "EXPORTED PDU "
+                        + " Dissector: "
+                        + getDissector()
+                        + " Payload Length: "
+                        + getPayload().getReadableBytes()
+                        + " Options: "
+                        + Arrays.toString(options);
 
         return sb;
     }
-
 
     @Override
     public PDUOption[] getOptions() {
@@ -73,7 +73,8 @@ public final class UpperPDUPacketImpl extends AbstractPacket implements UpperPDU
     @Override
     public UpperPDUPacket clone() {
         final PCapPacket pkt = this.parent.clone();
-        return new UpperPDUPacketImpl(getProtocol(), pkt, this.options.clone(), getPayload().clone());
+        return new UpperPDUPacketImpl(
+                getProtocol(), pkt, this.options.clone(), getPayload().clone());
     }
 
     @Override

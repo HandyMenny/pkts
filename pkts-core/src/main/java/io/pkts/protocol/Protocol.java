@@ -32,7 +32,10 @@ public enum Protocol {
 
     private final Layer layer;
 
-    /** Nullable representation of the LINK-LAYER HEADER TYPE VALUES - see http://www.tcpdump.org/linktypes.html */
+    /**
+     * Nullable representation of the LINK-LAYER HEADER TYPE VALUES - see
+     * http://www.tcpdump.org/linktypes.html
+     */
     private Long linkType = null;
 
     private Protocol(final String name, final Layer layer) {
@@ -47,12 +50,11 @@ public enum Protocol {
     }
 
     /**
-     * The short name of this protocol. Similar to what Wireshark shows in its
-     * short description of all the known protocols within its "super" frame.
-     * E.g., if you "click" on the Pcap Frame it will have a field called
-     * "protocols in frame" and will display something like
+     * The short name of this protocol. Similar to what Wireshark shows in its short description of
+     * all the known protocols within its "super" frame. E.g., if you "click" on the Pcap Frame it
+     * will have a field called "protocols in frame" and will display something like
      * "eth:ip:udp:sip:sdp", this function will return a short name like that.
-     * 
+     *
      * @return
      */
     public String getName() {
@@ -65,11 +67,10 @@ public enum Protocol {
     }
 
     /**
-     * Each {@link Protocol} operates within a particular {@link Layer} in the
-     * ISO stack. This is mainly used by the {@link FramerManager} when trying
-     * to determine which {@link Framer}s it should consult when trying to
-     * figure out which framer to use.
-     * 
+     * Each {@link Protocol} operates within a particular {@link Layer} in the ISO stack. This is
+     * mainly used by the {@link FramerManager} when trying to determine which {@link Framer}s it
+     * should consult when trying to figure out which framer to use.
+     *
      * @return
      */
     public Layer getProtocolLayer() {
@@ -77,11 +78,10 @@ public enum Protocol {
     }
 
     /**
-     * Get a protocol based on it's defined byte code. This is only true for
-     * some protocols
-     * 
-     * For a full list: http://en.wikipedia.org/wiki/List_of_IP_protocol_numbers
-     * 
+     * Get a protocol based on it's defined byte code. This is only true for some protocols
+     *
+     * <p>For a full list: http://en.wikipedia.org/wiki/List_of_IP_protocol_numbers
+     *
      * @param code
      * @return
      */
@@ -109,7 +109,10 @@ public enum Protocol {
     }
 
     public static enum Layer {
-        LAYER_1, LAYER_2, LAYER_3, LAYER_4, LAYER_7;
+        LAYER_1,
+        LAYER_2,
+        LAYER_3,
+        LAYER_4,
+        LAYER_7;
     }
-
 }

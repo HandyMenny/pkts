@@ -2,7 +2,6 @@ package io.pkts.packet.gsmtap;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.packet.impl.ApplicationPacket;
-
 import java.io.IOException;
 
 public interface GsmTapPacket extends ApplicationPacket {
@@ -83,7 +82,6 @@ public interface GsmTapPacket extends ApplicationPacket {
                 return UNKNOWN;
             }
         }
-
     }
 
     enum UmtsRRCSubType implements SubType {

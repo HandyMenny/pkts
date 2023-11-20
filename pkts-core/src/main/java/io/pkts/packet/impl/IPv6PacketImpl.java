@@ -1,18 +1,14 @@
-/**
- *
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
-import io.pkts.framer.FramingException;
 import io.pkts.framer.TCPFramer;
 import io.pkts.framer.UDPFramer;
 import io.pkts.packet.IPv6Packet;
 import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -32,7 +28,11 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
 
     private final int nextProtocol;
 
-    public IPv6PacketImpl(final Packet parent, final Buffer headers, final int nextProtocol, final Buffer payload) {
+    public IPv6PacketImpl(
+            final Packet parent,
+            final Buffer headers,
+            final int nextProtocol,
+            final Buffer payload) {
         super(Protocol.IPv6, parent, payload);
         assert parent != null;
         assert headers != null;
@@ -43,8 +43,8 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
     /**
      * Get the raw source ip.
      *
-     * Note, these are the raw bits and should be treated as such. If you really
-     * want to print it, then you should treat it as unsigned
+     * <p>Note, these are the raw bits and should be treated as such. If you really want to print
+     * it, then you should treat it as unsigned
      *
      * @return
      */
@@ -61,10 +61,7 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
         throw new RuntimeException("Not implemented");
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getSourceIP() {
         try {
@@ -77,8 +74,8 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
     /**
      * Get the raw destination ip.
      *
-     * Note, these are the raw bits and should be treated as such. If you really
-     * want to print it, then you should treat it as unsigned
+     * <p>Note, these are the raw bits and should be treated as such. If you really want to print
+     * it, then you should treat it as unsigned
      *
      * @return
      */
@@ -95,10 +92,7 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
         throw new RuntimeException("Not implemented");
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getDestinationIP() {
         try {
@@ -108,9 +102,7 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // nothing to do for ip packets
@@ -168,7 +160,9 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
     @Override
     public IPv6Packet clone() {
         final Packet parent = getParentPacket().clone();
-        final IPv6Packet pkt = new IPv6PacketImpl(parent, this.headers.clone(), this.nextProtocol, getPayload().clone());
+        final IPv6Packet pkt =
+                new IPv6PacketImpl(
+                        parent, this.headers.clone(), this.nextProtocol, getPayload().clone());
         return pkt;
     }
 
@@ -182,17 +176,17 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
         final Protocol protocol = Protocol.valueOf((byte) nextProtocol);
         if (protocol != null) {
             switch (protocol) {
-            case UDP:
-                return udpFramer.frame(this, payload);
-            case TCP:
-                return tcpFramer.frame(this, payload);
-            default:
-                throw new PacketParseException(0, "Unsupported inner protocol for IPv6");
+                case UDP:
+                    return udpFramer.frame(this, payload);
+                case TCP:
+                    return tcpFramer.frame(this, payload);
+                default:
+                    throw new PacketParseException(0, "Unsupported inner protocol for IPv6");
             }
         } else {
-            throw new PacketParseException(0, String.format("Unknown protocol %d inside IPv6 packet", nextProtocol));
+            throw new PacketParseException(
+                    0, String.format("Unknown protocol %d inside IPv6 packet", nextProtocol));
         }
-
     }
 
     @Override
@@ -237,9 +231,12 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("IPv6 ");
-        sb.append(" Total Length: ").append(getTotalIPLength())
-                .append(" ID: ").append(getIdentification())
-                .append(" Fragment Offset: ").append(getFragmentOffset());
+        sb.append(" Total Length: ")
+                .append(getTotalIPLength())
+                .append(" ID: ")
+                .append(getIdentification())
+                .append(" Fragment Offset: ")
+                .append(getFragmentOffset());
         return sb.toString();
     }
 
@@ -281,7 +278,8 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
                 thisHeaderNumber = nextHeaderNumber;
             }
         } catch (final IOException e) {
-            throw new PacketParseException(0, String.format("Error extracting extension header %d", extensionNumber), e);
+            throw new PacketParseException(
+                    0, String.format("Error extracting extension header %d", extensionNumber), e);
         }
         return null;
     }

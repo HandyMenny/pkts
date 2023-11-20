@@ -1,10 +1,10 @@
 package io.pkts.packet.sctp.impl;
 
+import static io.pkts.packet.PreConditions.assertNotNull;
+
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
 import io.pkts.packet.sctp.SctpDataChunk;
-
-import static io.pkts.packet.PreConditions.assertNotNull;
 
 public class SctpDataChunkImpl extends DelegatingSctpChunk implements SctpDataChunk {
 

@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -8,7 +6,6 @@ import io.pkts.packet.IPPacket;
 import io.pkts.packet.UDPPacket;
 import io.pkts.packet.impl.UdpPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
@@ -16,23 +13,16 @@ import java.io.IOException;
  */
 public class UDPFramer implements Framer<IPPacket, UDPPacket> {
 
-    /**
-     * 
-     */
-    public UDPFramer() {
-    }
+    /** */
+    public UDPFramer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.UDP;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public UDPPacket frame(final IPPacket parent, final Buffer buffer) throws IOException {
         if (parent == null) {
@@ -55,5 +45,4 @@ public class UDPFramer implements Framer<IPPacket, UDPPacket> {
         // TODO Auto-generated method stub
         return false;
     }
-
 }

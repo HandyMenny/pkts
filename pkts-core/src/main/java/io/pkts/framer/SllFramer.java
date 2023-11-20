@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.framer;
 
 import io.pkts.buffer.Buffer;
@@ -8,62 +6,49 @@ import io.pkts.packet.MACPacket;
 import io.pkts.packet.PCapPacket;
 import io.pkts.packet.impl.MACPacketImpl;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 
 /**
  * SLL is the linux cooked-mode capture.
- * 
- * http://wiki.wireshark.org/SLL
- * 
- * Also, check out the source file pcap/sll.h in libpcap. it contains the
- * structure and the defined values
- * 
+ *
+ * <p>http://wiki.wireshark.org/SLL
+ *
+ * <p>Also, check out the source file pcap/sll.h in libpcap. it contains the structure and the
+ * defined values
+ *
  * @author jonas@jonasborjesson.com
  */
 public class SllFramer implements Framer<PCapPacket, MACPacket> {
 
-    /**
-     * See pcap/sll.h for the meaning of these values
-     */
+    /** See pcap/sll.h for the meaning of these values */
     private static final byte LINUX_SLL_HOST = (byte) 0x00;
+
     private static final byte LINUX_SLL_BROADCAST = (byte) 0x01;
     private static final byte LINUX_SLL_MULTICAST = (byte) 0x02;
     private static final byte LINUX_SLL_OTHERHOST = (byte) 0x03;
     private static final byte LINUX_SLL_OUTGOING = (byte) 0x04;
 
     /**
-     * See pcap/sll.h for explanation of what this is. Also note that these
-     * values are actually two bytes starting with 0x00 but I left that out
-     * here.
-     * 
-     * Novell 802.3 frames without 802.2 LLC header
-     * 
+     * See pcap/sll.h for explanation of what this is. Also note that these values are actually two
+     * bytes starting with 0x00 but I left that out here.
+     *
+     * <p>Novell 802.3 frames without 802.2 LLC header
      */
     private static final byte LINUX_SLL_P_802_3 = (byte) 0x01;
 
-    /**
-     * 802.2 frames (not D/I/X Ethernet)
-     */
+    /** 802.2 frames (not D/I/X Ethernet) */
     private static final byte LINUX_SLL_P_802_2 = (byte) 0x04;
 
-    /**
-     * 
-     */
-    public SllFramer() {
-    }
+    /** */
+    public SllFramer() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Protocol getProtocol() {
         return Protocol.SLL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MACPacket frame(final PCapPacket parent, final Buffer buffer) throws IOException {
         if (parent == null) {
@@ -77,40 +62,35 @@ public class SllFramer implements Framer<PCapPacket, MACPacket> {
 
     /**
      * (taken from pcap/sll.sh)
-     * 
-     * For captures on Linux cooked sockets, we construct a fake header that
-     * includes:
-     * 
-     * a 2-byte "packet type" which is one of:
-     * 
-     * LINUX_SLL_HOST packet was sent to us LINUX_SLL_BROADCAST packet was
-     * broadcast LINUX_SLL_MULTICAST packet was multicast LINUX_SLL_OTHERHOST
-     * packet was sent to somebody else LINUX_SLL_OUTGOING packet was sent *by*
-     * us;
-     * 
-     * a 2-byte Ethernet protocol field;
-     * 
-     * a 2-byte link-layer type;
-     * 
-     * a 2-byte link-layer address length;
-     * 
-     * an 8-byte source link-layer address, whose actual length is specified by
-     * the previous value.
-     * 
-     * All fields except for the link-layer address are in network byte order.
-     * 
-     * DO NOT change the layout of this structure, or change any of the
-     * LINUX_SLL_ values below. If you must change the link-layer header for a
-     * "cooked" Linux capture, introduce a new DLT_ type (ask
-     * "tcpdump-workers@lists.tcpdump.org" for one, so that you don't give it a
-     * value that collides with a value already being used), and use the new
-     * header in captures of that type, so that programs that can handle
-     * DLT_LINUX_SLL captures will continue to handle them correctly without any
-     * change, and so that capture files with different headers can be told
+     *
+     * <p>For captures on Linux cooked sockets, we construct a fake header that includes:
+     *
+     * <p>a 2-byte "packet type" which is one of:
+     *
+     * <p>LINUX_SLL_HOST packet was sent to us LINUX_SLL_BROADCAST packet was broadcast
+     * LINUX_SLL_MULTICAST packet was multicast LINUX_SLL_OTHERHOST packet was sent to somebody else
+     * LINUX_SLL_OUTGOING packet was sent *by* us;
+     *
+     * <p>a 2-byte Ethernet protocol field;
+     *
+     * <p>a 2-byte link-layer type;
+     *
+     * <p>a 2-byte link-layer address length;
+     *
+     * <p>an 8-byte source link-layer address, whose actual length is specified by the previous
+     * value.
+     *
+     * <p>All fields except for the link-layer address are in network byte order.
+     *
+     * <p>DO NOT change the layout of this structure, or change any of the LINUX_SLL_ values below.
+     * If you must change the link-layer header for a "cooked" Linux capture, introduce a new DLT_
+     * type (ask "tcpdump-workers@lists.tcpdump.org" for one, so that you don't give it a value that
+     * collides with a value already being used), and use the new header in captures of that type,
+     * so that programs that can handle DLT_LINUX_SLL captures will continue to handle them
+     * correctly without any change, and so that capture files with different headers can be told
      * apart and programs that read them can dissect the packets in them.
-     * 
-     * 
-     * {@inheritDoc}
+     *
+     * <p>{@inheritDoc}
      */
     @Override
     public boolean accept(final Buffer buffer) throws IOException {
@@ -138,7 +118,10 @@ public class SllFramer implements Framer<PCapPacket, MACPacket> {
             return false;
         }
 
-        return b2 == LINUX_SLL_HOST || b2 == LINUX_SLL_BROADCAST || b2 == LINUX_SLL_MULTICAST
-                || b2 == LINUX_SLL_OTHERHOST || b2 == LINUX_SLL_OUTGOING;
+        return b2 == LINUX_SLL_HOST
+                || b2 == LINUX_SLL_BROADCAST
+                || b2 == LINUX_SLL_MULTICAST
+                || b2 == LINUX_SLL_OTHERHOST
+                || b2 == LINUX_SLL_OUTGOING;
     }
 }

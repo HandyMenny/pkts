@@ -1,10 +1,5 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet.impl;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
@@ -12,10 +7,11 @@ import io.pkts.packet.IPPacket;
 import io.pkts.packet.TCPPacket;
 import io.pkts.packet.TransportPacket;
 import io.pkts.protocol.Protocol;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author jonas@jonasborjesson.com
- * 
  */
 public final class TcpPacketImpl extends TransportPacketImpl implements TCPPacket {
 
@@ -27,15 +23,17 @@ public final class TcpPacketImpl extends TransportPacketImpl implements TCPPacke
      * @param parent
      * @param headers
      */
-    public TcpPacketImpl(final IPPacket parent, final Buffer headers, final Buffer options, final Buffer payload) {
+    public TcpPacketImpl(
+            final IPPacket parent,
+            final Buffer headers,
+            final Buffer options,
+            final Buffer payload) {
         super(parent, Protocol.TCP, headers, payload);
         this.headers = headers;
         this.options = options;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isTCP() {
         return true;
@@ -68,7 +66,7 @@ public final class TcpPacketImpl extends TransportPacketImpl implements TCPPacke
 
     /**
      * Get the header length in bytes
-     * 
+     *
      * @return
      */
     @Override
@@ -123,7 +121,7 @@ public final class TcpPacketImpl extends TransportPacketImpl implements TCPPacke
 
     /**
      * Check whether the psh (push) flag is turned on
-     * 
+     *
      * @return
      */
     @Override

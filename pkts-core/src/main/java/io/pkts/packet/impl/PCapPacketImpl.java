@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
@@ -12,19 +10,18 @@ import io.pkts.framer.IPv4Framer;
 import io.pkts.framer.SllFramer;
 import io.pkts.framer.UpperPDUFramer;
 import io.pkts.packet.PCapPacket;
-import io.pkts.packet.PacketParseException;
 import io.pkts.packet.Packet;
+import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * TODO: may rename this to a frame instead since this is a little different
- * than a "real" protocol packet.
- * 
+ * TODO: may rename this to a frame instead since this is a little different than a "real" protocol
+ * packet.
+ *
  * @author jonas@jonasborjesson.com
  */
 public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
@@ -37,9 +34,7 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
     private static final UpperPDUFramer upperPduFramer = new UpperPDUFramer();
     private final PcapGlobalHeader pcapGlobalHeader;
 
-    /**
-     * Constructor which assumes an Ethernet link layer.
-     */
+    /** Constructor which assumes an Ethernet link layer. */
     public PCapPacketImpl(final PcapRecordHeader header, final Buffer payload) {
         super(Protocol.PCAP, null, payload);
         this.pcapGlobalHeader = PcapGlobalHeader.createDefaultHeader();
@@ -47,22 +42,25 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
     }
 
     /**
-     * Constructor which uses the PCAP file's global header to support more than just Ethernet link layers
+     * Constructor which uses the PCAP file's global header to support more than just Ethernet link
+     * layers
      */
-    public PCapPacketImpl(PcapGlobalHeader pcapGlobalHeader, final PcapRecordHeader header, final Buffer payload) {
+    public PCapPacketImpl(
+            PcapGlobalHeader pcapGlobalHeader,
+            final PcapRecordHeader header,
+            final Buffer payload) {
         super(Protocol.PCAP, null, payload);
         this.pcapGlobalHeader = pcapGlobalHeader;
         this.pcapHeader = header;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public long getArrivalTime() {
         final long multiplier = pcapGlobalHeader.timestampsInNs() ? 1000000000 : 1000000;
 
-        return this.pcapHeader.getTimeStampSeconds() * multiplier + this.pcapHeader.getTimeStampMicroOrNanoSeconds();
+        return this.pcapHeader.getTimeStampSeconds() * multiplier
+                + this.pcapHeader.getTimeStampMicroOrNanoSeconds();
     }
 
     @Override
@@ -75,9 +73,7 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
         return this.pcapHeader.getCapturedLength();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() {
         // nothing to verify for the pcap packet since that would
@@ -89,11 +85,16 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
         final StringBuilder sb = new StringBuilder();
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS");
         final Date date = new Date(getArrivalTime() / 1000);
-        sb.append("Arrival Time: ").append(formatter.format(date))
-          .append(" Epoch Time: ").append(this.pcapHeader.getTimeStampSeconds()).append(".")
-          .append(String.format("%09d", this.pcapHeader.getTimeStampMicroOrNanoSeconds()))
-          .append(" Frame Length: ").append(getTotalLength())
-          .append(" Capture Length: ").append(getCapturedLength());
+        sb.append("Arrival Time: ")
+                .append(formatter.format(date))
+                .append(" Epoch Time: ")
+                .append(this.pcapHeader.getTimeStampSeconds())
+                .append(".")
+                .append(String.format("%09d", this.pcapHeader.getTimeStampMicroOrNanoSeconds()))
+                .append(" Frame Length: ")
+                .append(getTotalLength())
+                .append(" Capture Length: ")
+                .append(getCapturedLength());
 
         return sb.toString();
     }
@@ -119,8 +120,7 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
             return null;
         }
 
-        switch(pcapGlobalHeader.getDataLinkType())
-        {
+        switch (pcapGlobalHeader.getDataLinkType()) {
             case 1:
             default:
                 try {
@@ -136,5 +136,4 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
                 return upperPduFramer.frame(this, payload);
         }
     }
-
 }

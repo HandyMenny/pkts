@@ -94,4 +94,9 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
     private int getSubTypeAsInt() {
         return headers.getUnsignedByte(12);
     }
+
+    @Override
+    public int getArfcn() {
+        return headers.getUnsignedShort(4);
+    }
 }

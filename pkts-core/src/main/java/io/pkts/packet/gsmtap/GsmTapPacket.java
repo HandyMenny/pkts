@@ -15,6 +15,8 @@ public interface GsmTapPacket extends ApplicationPacket {
 
     SubType getSubType() throws IOException;
 
+    int getArfcn();
+
     enum Type {
         UNKNOWN,
         UM,

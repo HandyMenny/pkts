@@ -13,11 +13,7 @@ public interface GsmTapPacket extends ApplicationPacket {
 
     Type getType() throws IOException;
 
-    int getTypeAsInt();
-
     SubType getSubType() throws IOException;
-
-    int getSubTypeAsInt();
 
     enum Type {
         UNKNOWN,

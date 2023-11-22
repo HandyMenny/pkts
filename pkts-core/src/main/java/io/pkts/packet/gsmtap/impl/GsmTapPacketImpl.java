@@ -82,8 +82,7 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
         return Type.valueOf(getTypeAsInt());
     }
 
-    @Override
-    public int getTypeAsInt() {
+    private int getTypeAsInt() {
         return headers.getUnsignedByte(2);
     }
 
@@ -92,8 +91,7 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
         return SubType.valueOf(getType(), getSubTypeAsInt());
     }
 
-    @Override
-    public int getSubTypeAsInt() {
+    private int getSubTypeAsInt() {
         return headers.getUnsignedByte(12);
     }
 }

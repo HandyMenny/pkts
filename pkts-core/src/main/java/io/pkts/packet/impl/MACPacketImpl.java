@@ -2,7 +2,6 @@
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
-import io.pkts.buffer.Buffers;
 import io.pkts.frame.UnknownEtherType;
 import io.pkts.framer.EthernetFramer;
 import io.pkts.framer.IPv4Framer;
@@ -13,7 +12,6 @@ import io.pkts.packet.PCapPacket;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * @author jonas@jonasborjesson.com
@@ -29,27 +27,6 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
 
     /** If the headers are set then this overrides any of the source stuff set above. */
     private final Buffer headers;
-
-    /**
-     * Creates a new {@link MACPacketImpl} and it assumes ethernet II and it does not check whether
-     * or not the ethertype is a known type. This method should only be used by the internal packet
-     * creating functions such as the {@link TransportPacketFactoryImpl} or the framers.
-     *
-     * @param parent
-     * @param headers
-     * @return
-     */
-    public static MACPacketImpl create(final PCapPacket parent, final Buffer headers) {
-        if (headers.capacity() < 14) {
-            throw new IllegalArgumentException("Not enough bytes to create this header");
-        }
-
-        if (parent == null) {
-            throw new IllegalArgumentException("The parent packet cannot be null");
-        }
-
-        return new MACPacketImpl(Protocol.ETHERNET_II, parent, headers, null);
-    }
 
     /** Construct a new {@link MACPacket} based on the supplied headers. */
     public MACPacketImpl(
@@ -124,11 +101,6 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
     @Override
     public long getArrivalTime() {
         return this.parent.getArrivalTime();
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        this.parent.write(out, Buffers.wrap(this.headers, payload));
     }
 
     /** {@inheritDoc} */

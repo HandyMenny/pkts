@@ -11,7 +11,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * @author jonas@jonasborjesson.com
@@ -133,19 +132,6 @@ public final class IPv4PacketImpl extends AbstractPacket implements IPv4Packet {
     @Override
     public long getArrivalTime() {
         return this.parent.getArrivalTime();
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        // Note, you need to set the total length before you merge the packets since
-        // Buffers.wrap will copy the bytes.
-        final int size =
-                this.headers.getReadableBytes()
-                        + (payload != null ? payload.getReadableBytes() : 0);
-        this.setTotalLength(size);
-        reCalculateChecksum();
-        final Buffer pkt = Buffers.wrap(this.headers, payload);
-        this.parent.write(out, pkt);
     }
 
     @Override

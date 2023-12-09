@@ -13,7 +13,6 @@ import io.pkts.packet.sctp.SctpPacket;
 import io.pkts.packet.sctp.SctpParseException;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,11 +63,6 @@ public class SctpPacketImpl extends TransportPacketImpl implements SctpPacket {
 
     @Override
     public int getHeaderLength() {
-        throw new RuntimeException("Not yet implemented");
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
         throw new RuntimeException("Not yet implemented");
     }
 

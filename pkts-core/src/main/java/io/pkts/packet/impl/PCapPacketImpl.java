@@ -14,7 +14,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,13 +32,6 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
     private static final IPv4Framer ipFramer = new IPv4Framer();
     private static final UpperPDUFramer upperPduFramer = new UpperPDUFramer();
     private final PcapGlobalHeader pcapGlobalHeader;
-
-    /** Constructor which assumes an Ethernet link layer. */
-    public PCapPacketImpl(final PcapRecordHeader header, final Buffer payload) {
-        super(Protocol.PCAP, null, payload);
-        this.pcapGlobalHeader = PcapGlobalHeader.createDefaultHeader();
-        this.pcapHeader = header;
-    }
 
     /**
      * Constructor which uses the PCAP file's global header to support more than just Ethernet link
@@ -97,15 +89,6 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
                 .append(getCapturedLength());
 
         return sb.toString();
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        final int size = payload.getReadableBytes();
-        this.pcapHeader.setCapturedLength(size);
-        this.pcapHeader.setTotalLength(size);
-        this.pcapHeader.write(out);
-        out.write(payload.getArray());
     }
 
     @Override

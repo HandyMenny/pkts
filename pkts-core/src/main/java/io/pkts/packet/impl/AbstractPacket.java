@@ -9,7 +9,6 @@ import io.pkts.packet.TransportPacket;
 import io.pkts.packet.UDPPacket;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * ALL packets within pkts.io must implement this {@link AbstractPacket}.
@@ -55,22 +54,6 @@ public abstract class AbstractPacket implements Packet {
     @Override
     public void verify() {
         // TODO Auto-generated method stub
-    }
-
-    /**
-     * The write strategy is fairly simple. If we have a "nextPacket" it means that we have been
-     * asked to frame our payload which also means that that payload may have changed and therefore
-     * ask the nextPacket to write itself back out to the stream. If there is no nextPacket we can
-     * just take the raw payload and write it out as is since it cannot have changed since we framed
-     * this packet.
-     */
-    @Override
-    public final void write(final OutputStream out) throws IOException {
-        if (this.nextPacket != null) {
-            this.nextPacket.write(out);
-        } else {
-            this.write(out, this.payload);
-        }
     }
 
     @Override

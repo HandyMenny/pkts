@@ -1,10 +1,7 @@
 package io.pkts.frame;
 
 import io.pkts.buffer.Buffer;
-import io.pkts.buffer.Buffers;
-import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteOrder;
 
 /**
@@ -60,54 +57,6 @@ public final class PcapGlobalHeader {
     private final ByteOrder byteOrder;
     private final byte[] body;
     private final boolean nsTimestamps;
-
-    /**
-     * Factory method for creating a default {@link PcapGlobalHeader}. Mainly used for when writing
-     * out new pcaps to a stream.
-     *
-     * @return
-     */
-    public static PcapGlobalHeader createDefaultHeader() {
-        return createDefaultHeader(Protocol.ETHERNET_II);
-    }
-
-    public static PcapGlobalHeader createDefaultHeader(Protocol protocol) {
-        Buffer body = Buffers.createBuffer(20);
-
-        // major version number
-        body.setUnsignedByte(0, (short) 2);
-        // minor version number
-        body.setUnsignedByte(2, (short) 4);
-        // GMT to local correction - in practice always zero
-        body.setUnsignedInt(4, 0);
-        // accuracy of timestamp - always zero.
-        body.setUnsignedInt(8, 0);
-        // snaplength - typically 65535
-        body.setUnsignedInt(12, 65535);
-
-        // data link type - default is ethernet
-        // See http://www.tcpdump.org/linktypes.html for a complete list
-        if (protocol == null) {
-            protocol = Protocol.ETHERNET_II;
-        }
-
-        Long linkType = protocol.getLinkType();
-        if (linkType != null) {
-            body.setUnsignedInt(16, linkType);
-        } else {
-            throw new IllegalArgumentException(
-                    "Unknown protocol \""
-                            + protocol
-                            + "\". Not sure how to construct the global header. You probably need"
-                            + " to add some code yourself");
-        }
-
-        return new PcapGlobalHeader(ByteOrder.LITTLE_ENDIAN, body.getRawArray());
-    }
-
-    public PcapGlobalHeader(final ByteOrder byteOrder, final byte[] body) {
-        this(byteOrder, body, false);
-    }
 
     public PcapGlobalHeader(
             final ByteOrder byteOrder, final byte[] body, final boolean nsTimestamps) {
@@ -243,28 +192,6 @@ public final class PcapGlobalHeader {
         final byte[] body = in.readBytes(20).getArray();
 
         return new PcapGlobalHeader(byteOrder, body, nsTimestamps);
-    }
-
-    /**
-     * Will write this header to the output stream.
-     *
-     * @param out
-     */
-    public void write(final OutputStream out) throws IOException {
-        if (this.nsTimestamps) {
-            if (this.byteOrder == ByteOrder.BIG_ENDIAN) {
-                out.write(MAGIC_NSEC);
-            } else {
-                out.write(MAGIC_NSEC_SWAPPED);
-            }
-        } else {
-            if (this.byteOrder == ByteOrder.BIG_ENDIAN) {
-                out.write(MAGIC_BIG_ENDIAN);
-            } else {
-                out.write(MAGIC_LITTLE_ENDIAN);
-            }
-        }
-        out.write(this.body);
     }
 
     @Override

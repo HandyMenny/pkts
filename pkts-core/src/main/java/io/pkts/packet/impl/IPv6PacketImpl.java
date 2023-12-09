@@ -10,7 +10,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -134,12 +133,6 @@ public final class IPv6PacketImpl extends AbstractPacket implements IPv6Packet {
     @Override
     public long getArrivalTime() {
         return getParentPacket().getArrivalTime();
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        final Buffer pkt = Buffers.wrap(this.headers, payload);
-        getParentPacket().write(out, pkt);
     }
 
     @Override

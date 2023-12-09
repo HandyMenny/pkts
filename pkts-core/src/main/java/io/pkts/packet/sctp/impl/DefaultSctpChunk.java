@@ -13,13 +13,6 @@ public class DefaultSctpChunk implements SctpChunk {
     private final SctpChunk.Type type;
     private final Buffer header;
 
-    /**
-     * This contains the full value as was seen on the wire, including padding. The reason we save
-     * this is if we have to write back the chunk to the wire (or rather in a pcap) then it is ready
-     * to go.
-     */
-    // private final Buffer valueOnWire;
-
     /** This is just the value excluding padding. */
     private final Buffer value;
 

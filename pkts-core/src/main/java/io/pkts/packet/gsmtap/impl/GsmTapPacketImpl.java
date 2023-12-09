@@ -8,7 +8,6 @@ import io.pkts.packet.gsmtap.GsmTapPacket;
 import io.pkts.packet.impl.AbstractPacket;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 
 public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPacket {
 
@@ -59,12 +58,6 @@ public final class GsmTapPacketImpl extends AbstractPacket implements GsmTapPack
     @Override
     public Packet getNextPacket() throws IOException {
         return null;
-    }
-
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Haven't implemented this yet");
     }
 
     @Override

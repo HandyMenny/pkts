@@ -1,11 +1,9 @@
 /** */
 package io.pkts.packet;
 
-import io.pkts.PcapOutputStream;
 import io.pkts.buffer.Buffer;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 
 /**
@@ -55,27 +53,6 @@ public interface Packet extends Cloneable {
      * up and then deal with it"
      */
     void verify();
-
-    /**
-     * Write this packet to the {@link OutputStream}. Typically, the {@link OutputStream} would be a
-     * {@link PcapOutputStream} so when writing packets to this stream they will still be a valid
-     * pcap.
-     *
-     * @param out
-     * @throws IOException
-     */
-    void write(OutputStream out) throws IOException;
-
-    /**
-     * Writes this packet to the {@link OutputStream} with the supplied payload. You can use this
-     * method to e.g. write a raw {@link UDPPacket} to the stream with this payload. Note, if the
-     * {@link UDPPacket} already had a payload it will be ignored so use this method with care.
-     *
-     * @param out
-     * @param payload
-     * @throws IOException
-     */
-    void write(OutputStream out, Buffer payload) throws IOException;
 
     Packet clone();
 

@@ -8,7 +8,6 @@ import io.pkts.packet.PCapPacket;
 import io.pkts.packet.impl.MACPacketImpl;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Simple framer for framing Ethernet frames
@@ -116,11 +115,6 @@ public class EthernetFramer implements Framer<PCapPacket, MACPacket> {
 
         public byte getB2() {
             return b2;
-        }
-
-        public void write(final OutputStream out) throws IOException {
-            out.write(this.b1);
-            out.write(this.b2);
         }
     }
 }

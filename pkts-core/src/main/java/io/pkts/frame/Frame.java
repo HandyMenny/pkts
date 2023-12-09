@@ -1,14 +1,12 @@
 /** */
 package io.pkts.frame;
 
-import io.pkts.PcapOutputStream;
 import io.pkts.buffer.Buffer;
 import io.pkts.packet.Packet;
 import io.pkts.packet.PacketParseException;
 import io.pkts.protocol.Protocol;
 import java.io.Externalizable;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * A frame in the OSI model typically have some headers and then a payload/data section. The payload
@@ -93,14 +91,9 @@ public interface Frame extends Externalizable {
     Packet parse() throws PacketParseException;
 
     /**
-     * Each {@link Frame} was captured in a pcap that had this {@link PcapGlobalHeader}. Using this
-     * header you can create a new {@link PcapOutputStream} and then write this {@link Frame} to the
-     * output stream without having to worry about which byte order etc this {@link Frame} is
-     * encoded in.
+     * Each {@link Frame} was captured in a pcap that had this {@link PcapGlobalHeader}.
      *
      * @return
      */
     PcapGlobalHeader getPcapGlobalHeader();
-
-    void write(OutputStream out) throws IOException;
 }

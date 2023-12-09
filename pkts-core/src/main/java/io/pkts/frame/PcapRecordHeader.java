@@ -3,8 +3,6 @@ package io.pkts.frame;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.buffer.Buffers;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteOrder;
 
 /**
@@ -117,10 +115,6 @@ public final class PcapRecordHeader {
 
     public void setCapturedLength(final long length) {
         this.body.setUnsignedInt(8, length);
-    }
-
-    public void write(final OutputStream out) throws IOException {
-        out.write(this.body.getArray());
     }
 
     @Override

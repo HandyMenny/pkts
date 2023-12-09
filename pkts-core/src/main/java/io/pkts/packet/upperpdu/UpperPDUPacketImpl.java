@@ -7,7 +7,6 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.impl.AbstractPacket;
 import io.pkts.protocol.Protocol;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 
 public final class UpperPDUPacketImpl extends AbstractPacket implements UpperPDUPacket {
@@ -34,11 +33,6 @@ public final class UpperPDUPacketImpl extends AbstractPacket implements UpperPDU
     @Override
     public void verify() {
         // nothing to verify
-    }
-
-    @Override
-    public void write(OutputStream out, Buffer payload) throws IOException {
-        throw new RuntimeException("Not implemented");
     }
 
     @Override

@@ -2,11 +2,8 @@
 package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
-import io.pkts.buffer.Buffers;
 import io.pkts.packet.TransportPacket;
 import io.pkts.protocol.Protocol;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * @author jonas@jonasborjesson.com
@@ -38,13 +35,6 @@ public abstract class AbstractApplicationPacket extends AbstractPacket
     @Override
     public final long getArrivalTime() {
         return this.parent.getArrivalTime();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void write(final OutputStream out, final Buffer payload) throws IOException {
-        final Buffer buffer = this.payload != null ? Buffers.wrap(this.payload, payload) : payload;
-        this.parent.write(out, buffer);
     }
 
     /** {@inheritDoc} */

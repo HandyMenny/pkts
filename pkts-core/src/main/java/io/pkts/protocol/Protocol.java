@@ -26,6 +26,7 @@ public enum Protocol {
     ARP("arp", Layer.LAYER_3),
     GSMTAP("gsmtap", Layer.LAYER_4),
     UPPPER_PDU("upperpdu", Layer.LAYER_2, 252L),
+    SLL2("sll2", Layer.LAYER_2, 276L),
     UNKNOWN("unknown", null);
 
     private final String name;

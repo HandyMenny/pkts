@@ -152,8 +152,8 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
     }
 
     public Protocol getNextProtocol() throws IOException {
+        EthernetFramer.EtherType etherType = EthernetFramer.EtherType.None;
         if (getProtocol() == Protocol.ETHERNET_II) {
-            EthernetFramer.EtherType etherType;
             try {
                 etherType = EthernetFramer.getEtherType(headers.getByte(12), headers.getByte(13));
             } catch (UnknownEtherType e) {
@@ -161,33 +161,47 @@ public final class MACPacketImpl extends AbstractPacket implements MACPacket {
                         12,
                         String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
             }
-            if (etherType == EthernetFramer.EtherType.Dot1Q) {
-                try {
-                    etherType =
-                            EthernetFramer.getEtherType(headers.getByte(16), headers.getByte(17));
-                } catch (UnknownEtherType e) {
-                    throw new PacketParseException(
-                            16,
-                            String.format(
-                                    "Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
-                } catch (IndexOutOfBoundsException e) {
-                    throw new PacketParseException(14, "Not enough bytes in this header");
-                }
+        } else if (getProtocol() == Protocol.SLL) {
+            try {
+                etherType = EthernetFramer.getEtherType(headers.getByte(14), headers.getByte(15));
+            } catch (UnknownEtherType e) {
+                throw new PacketParseException(
+                        14,
+                        String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
             }
+        } else if (getProtocol() == Protocol.SLL2) {
+            try {
+                etherType = EthernetFramer.getEtherType(headers.getByte(0), headers.getByte(1));
+            } catch (UnknownEtherType e) {
+                throw new PacketParseException(
+                        0, String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
+            }
+        }
 
-            switch (etherType) {
-                case IPv4:
-                    return Protocol.IPv4;
-                case IPv6:
-                    return Protocol.IPv6;
-                case ARP:
-                    return Protocol.ARP;
-                default:
-                    return Protocol.UNKNOWN;
+        if (etherType == EthernetFramer.EtherType.Dot1Q) {
+            int maxSize = headers.capacity();
+            try {
+                etherType =
+                        EthernetFramer.getEtherType(
+                                headers.getByte(maxSize - 2), headers.getByte(maxSize - 1));
+            } catch (UnknownEtherType e) {
+                throw new PacketParseException(
+                        maxSize - 2,
+                        String.format("Unknown Ethernet type 0x%02x%02x", e.getB1(), e.getB2()));
+            } catch (IndexOutOfBoundsException e) {
+                throw new PacketParseException(maxSize - 4, "Not enough bytes in this header");
             }
-        } else {
-            // TODO: figure out how an SLL packet indicates IPv4 vs IPv6
-            return Protocol.IPv4;
+        }
+
+        switch (etherType) {
+            case IPv4:
+                return Protocol.IPv4;
+            case IPv6:
+                return Protocol.IPv6;
+            case ARP:
+                return Protocol.ARP;
+            default:
+                return Protocol.UNKNOWN;
         }
     }
 

@@ -38,7 +38,21 @@ public class Sll2Framer implements Framer<PCapPacket, MACPacket> {
             throw new IllegalArgumentException("The parent frame cannot be null");
         }
 
-        final Buffer headers = buffer.readBytes(20);
+        int headerSize = 20;
+
+        if (buffer.getReadableBytes() < headerSize) {
+            throw new FramingException("not enough bytes for header", getProtocol());
+        }
+
+        EthernetFramer.EtherType etherType =
+                EthernetFramer.getEtherTypeSafe(buffer.getByte(0), buffer.getByte(1));
+
+        if (etherType == EthernetFramer.EtherType.Dot1Q) {
+            // add 802.1q header
+            headerSize += 4;
+        }
+
+        final Buffer headers = buffer.readBytes(headerSize);
         final Buffer payload = buffer.slice(buffer.capacity());
         return new MACPacketImpl(Protocol.SLL2, parent, headers, payload);
     }

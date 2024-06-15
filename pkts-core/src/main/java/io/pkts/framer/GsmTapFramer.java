@@ -34,9 +34,27 @@ public final class GsmTapFramer implements Framer<TransportPacket, GsmTapPacket>
         return new GsmTapPacketImpl(parent, header, payload);
     }
 
+    private boolean scatUnofficialExtension(final Buffer data) {
+        // In GSMTAPv3 Draft the second byte is reserved and == 0, while in scat unofficial v3 == 7
+        // see:
+        // https://github.com/fgsect/scat/blob/d83b5cd3867463a49e76b8e54cd36a6f12100bf9/src/scat/util.py#L301
+
+        try {
+            int version = data.getUnsignedByte(0);
+            int headerLength = data.getUnsignedByte(1);
+
+            return version == 3 && headerLength == 7;
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        return false;
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean accept(final Buffer data) throws IOException {
-        return true;
+        int version = data.getUnsignedByte(0);
+
+        // accept only version 2 and scat unofficial v3
+        return version == 2 || scatUnofficialExtension(data);
     }
 }

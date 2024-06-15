@@ -98,7 +98,9 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
         }
 
         if (getDestinationPort() == GsmTapPacket.UDP_PORT) {
-            return gsmTapFramer.frame(this, payload);
+            if (gsmTapFramer.accept(payload)) {
+                return gsmTapFramer.frame(this, payload);
+            }
         }
 
         return new UnknownApplicationPacketImpl(this, payload);

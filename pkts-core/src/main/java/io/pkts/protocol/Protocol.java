@@ -25,6 +25,7 @@ public enum Protocol {
     RTCP("rtcp", Layer.LAYER_7),
     ARP("arp", Layer.LAYER_3),
     GSMTAP("gsmtap", Layer.LAYER_4),
+    GSMTAPV3("gsmtapv3", Layer.LAYER_4),
     UPPPER_PDU("upperpdu", Layer.LAYER_2, 252L),
     SLL2("sll2", Layer.LAYER_2, 276L),
     UNKNOWN("unknown", null);

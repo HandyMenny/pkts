@@ -3,6 +3,7 @@ package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.framer.GsmTapFramer;
+import io.pkts.framer.GsmTapV3Framer;
 import io.pkts.packet.IPPacket;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TransportPacket;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public abstract class TransportPacketImpl extends AbstractPacket implements TransportPacket {
 
     private static final GsmTapFramer gsmTapFramer = new GsmTapFramer();
+    private static final GsmTapV3Framer gsmTapV3Framer = new GsmTapV3Framer();
 
     private final IPPacket parent;
 
@@ -100,6 +102,10 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
         if (getDestinationPort() == GsmTapPacket.UDP_PORT) {
             if (gsmTapFramer.accept(payload)) {
                 return gsmTapFramer.frame(this, payload);
+            }
+
+            if (gsmTapV3Framer.accept(payload)) {
+                return gsmTapV3Framer.frame(this, payload);
             }
         }
 

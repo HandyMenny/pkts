@@ -28,11 +28,11 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum UnknownSubType implements IGsmTapV3SubType {
+    public enum UnknownSubType implements IGsmTapV3SubType {
         UNKNOWN
     }
 
-    enum BasebandDiagSubtype implements IGsmTapV3SubType {
+    public enum BasebandDiagSubtype implements IGsmTapV3SubType {
         UNKNOWN(-1),
         QUALCOMM(0x0001), /* Qualcomm DIAG */
         SAMSUNG(0x0002), /* Samsung SDM */
@@ -58,7 +58,7 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum UMSubtype implements IGsmTapV3SubType {
+    public enum UMSubtype implements IGsmTapV3SubType {
         UNKNOWN(0x0000),
         BCCH(0x0001),
         CCCH(0x0002),
@@ -97,7 +97,7 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum UmtsRRCSubType implements IGsmTapV3SubType {
+    public enum UmtsRRCSubType implements IGsmTapV3SubType {
         UNKNOWN(-1),
         DL_DCCH(0x0001),
         UL_DCCH(0x0002),
@@ -129,7 +129,7 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum LteRRCSubType implements IGsmTapV3SubType {
+    public enum LteRRCSubType implements IGsmTapV3SubType {
         UNKNOWN(-1),
         BCCH_BCH(0x0001),
         BCH_MBMS(0x0002),
@@ -172,7 +172,7 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum NrRRCSubType implements IGsmTapV3SubType {
+    public enum NrRRCSubType implements IGsmTapV3SubType {
         UNKNOWN(-1),
         BCCH_BCH(0x0001),
         BCCH_DL_SCH(0x0002),
@@ -204,7 +204,7 @@ public class GsmTapV3SubType {
         }
     }
 
-    enum NASSubType implements IGsmTapV3SubType {
+    public enum NASSubType implements IGsmTapV3SubType {
         UNKNOWN(-1),
         PLAIN(0x0000),
         SEC_HEADER(0x0001);
